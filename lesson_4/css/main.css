@@ -1,0 +1,173 @@
+body {
+  background-color: rgb(0, 0, 0);
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div.box {
+  color: white;
+}
+
+/* Регистрирую шрифты */
+@font-face {
+  /* Название которое мы используем в коде */
+  font-family: "Kelly Slab";
+  /* Путь к файлу со шрифтом .. - на уровень выше */
+  src: url("../assets/fonts/Kelly_Slab/KellySlab-Regular.ttf");
+  /* Начертание шрифта */
+  font-style: normal;
+  /* Толщина шрифта */
+  font-weight: normal;
+}
+
+@font-face {
+  /* Название которое мы используем в коде */
+  font-family: "Roboto Flex";
+  /* Путь к файлу со шрифтом .. - на уровень выше */
+  src: url("../assets/fonts/Roboto_Flex/RobotoFlex.ttf");
+  /* Начертание шрифта */
+  font-style: normal;
+  /* Толщина шрифта */
+  font-weight: normal;
+}
+
+h1,
+h2,
+h3,
+div.box {
+  font-family: "Kelly Slab", serif;
+}
+
+body {
+  font-family: "Roboto Flex", sans-serif;
+}
+
+img {
+  max-width: 100px;
+  display: inline-block;
+  margin: 10px;
+}
+
+.markup-text {
+  background-color: rgb(127, 113, 51);
+  padding: 2px;
+  border-radius: 3px;
+  margin-top: 50px;
+}
+
+/* 
+margin - внешний отступ
+margin-top - отступ сверху
+margin-bottom - отступ снизу
+margin-left - отступ слева
+margin-right - отступ справа
+
+padding - внутренний отступ
+padding-top - отступ сверху
+padding-bottom - отступ снизу
+padding-left - отступ слева
+padding-right - отступ справа
+
+Четыре позиции
+margin (top, right, bottom, left)
+Три позиции
+margin (top, right/left, bottom)
+Две позиции
+margin (top/bottom, right/left)
+Одна позиция
+margin (all)
+*/
+
+hr {
+  border: 2px solid rgb(255, 255, 255);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  /* 
+  0 - отступ сверху и снизу
+    auto - отступ слева и справа (автоматическое центрирование)
+  */
+  margin: 0 auto; /* Центрирование контейнера */
+  background-color: rgb(51, 51, 51);
+}
+
+.box {
+  border: 2px solid grey;
+  width: 20%;
+  min-width: 100px;
+  height: 30%;
+  min-height: 100px;
+  display: inline-block;
+  margin-right: 10px;
+  margin-top: 50px;
+  background-color: brown;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* ЕДЕНИЦЫ ИЗМЕРЕНИЯ CSS
+px - пиксели
+rem - относительная единица измерения, 1rem = размер шрифта корневого элемента (обычно 16px)
+em - относительная единица измерения, 1em = размер шрифта текущего элемента
+% - проценты от родительского элемента
+vh - высота окна просмотра, 1vh = 1% от высоты окна
+vw - ширина окна просмотра, 1vw = 1% от ширины окна
+
+*/
+
+html {
+  font-size: 10px; /* 1rem = 10px */
+}
+
+h1 {
+  font-size: 3.5rem; /* 35px */
+}
+
+h2 {
+  font-size: 2.5rem; /* 25px */
+}
+
+h3 {
+  font-size: 2rem; /* 20px */
+}
+
+p {
+  font-size: 1.6rem; /* 16px */
+}
+
+/* Зачем это все? Например мы можем захотеть 
+на телефонах сделать шрифт меньше */
+
+@media (max-width: 600px) {
+  html {
+    font-size: 8px; /* 1rem = 8px */
+  }
+  /* .box {
+    width: 100px;
+    height: 100px;
+  } */
+
+  .container {
+    width: 100%;
+  }
+}
+
+/* 
+display-wrap - свойство позволяющее переносить элементы на новую строку
+box-sizing - свойство позволяющее изменять модель коробки:
+- content-box - стандартная модель коробки (ширина и высота только контент)
+- border-box - ширина и высота включают в себя контент, padding и border
+
+
+*/
+

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Персонажи Futurama</title>
+    <!-- Подключили собственный CSS -->
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
+  <body>
+    <h1>Персонажи Futurama</h1>
+    <h2>Фрай - главный герой?</h2>
+    <img src="./assets/images/fray_1.webp" alt="Фрай Подозревака" /><img
+      src="./assets/images/fray_2.webp"
+      alt="Фрай Шальной с мозговым паразитом"
+    />
+    <!-- Современный вариант - дать 2 варианта ОДНОГО ФАЙЛА  fray_1.webp и fray_1.jpeg-->
+
+    <picture>
+      <source srcset="./assets/images/fray_1.webp" type="image/webp" />
+      <source srcset="./assets/images/fray_1.jpeg" type="image/jpeg" />
+      <img src="./assets/images/fray_1.jpeg" alt="Фрай Подозревака" />
+    </picture>
+    <p>
+      <span class="markup-text">Филип Дж. Фрай</span> - ленивый и беззаботный
+      курьер из 20-го века, который случайно заморожен и просыпается в 31-м
+      веке.
+    </p>
+    <h2>Бендер - робот развлекающий себя посещением кабинки для самоубийц</h2>
+    <p>
+      <span class="markup-text">Бендер Б. Родригес</span> - циничный и
+      саркастичный робот, который любит выпить и покурить, несмотря на то, что
+      он робот.
+    </p>
+    <h2>Доктор Зойберг - ничего не понимающий в человеках</h2>
+    <p>
+      <span class="markup-text">Джон Зойберг</span> - добродушный, но неуклюжий
+      крабоподобный инопланетянин, который работает врачом в компании
+      "Межпланетный экспресс".
+    </p>
+
+    <hr />
+
+    <h2>Эксперимент с квадратами</h2>
+    <!-- div.container>div.box{Блок №$}*12 -->
+    <div class="container">
+      <div class="box">
+        <h3>Фрай - главный герой?</h3>
+        <img src="./assets/images/fray_1.webp" alt="Фрай Подозревака" />
+        <p>
+          <span class="markup-text">Филип Дж. Фрай</span> - ленивый и
+          беззаботный курьер из 20-го века, который случайно заморожен и
+          просыпается в 31-м веке.
+        </p>
+      </div>
+      <div class="box">Блок №2</div>
+      <div class="box">Блок №3</div>
+      <div class="box">Блок №4</div>
+      <div class="box">Блок №5</div>
+      <div class="box">Блок №6</div>
+      <div class="box">Блок №7</div>
+      <div class="box">Блок №8</div>
+      <div class="box">Блок №9</div>
+      <div class="box">Блок №10</div>
+      <div class="box">Блок №11</div>
+      <div class="box">Блок №12</div>
+    </div>
+
+    <!-- Подключили собственный JS всегда внизу -->
+    <script src="./js/main.js"></script>
+  </body>
+</html>
