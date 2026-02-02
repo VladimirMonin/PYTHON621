@@ -1,0 +1,109 @@
+.bi-virus {
+  /* Меняем размер шрифта = размер иконки */
+  font-size: 160px;
+
+  /* Красим иконку в любой цвет */
+  color: #2ecc71;
+
+  /* Можно даже добавить свечение */
+  text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
+.stripped-table {
+  /*  */
+}
+
+table.stripped-table {
+}
+
+table td {
+  background-color: #2ecc71;
+}
+
+/* Не работает потому что у table нет прямых потомков td */
+table > td {
+  background-color: #c417bb;
+}
+
+/* 
+h2 - селектор по тегу
+.classname - селектор по классу
+h2.classname - селектор по тегу и классу
+table td - селектор по потомкам
+table > tr - селектор по дочерним элементам (непосредственным детям)
+#idname - селектор по id
+*/
+
+/* .tr-strip > td {
+  background-color: #c417bb;
+} */
+
+/* 
+nth-child - псевдокласс для выбора элементов по их порядковому номеру среди братьев и сестер
+*/
+
+/* table tr:nth-child(even) td {
+  background-color: #0c80b2;
+} */
+
+/* 
+odd - нечетные элементы
+even - четные элементы
+table - взяли таблицу
+tr:nth-child(odd) - выбрали нечетные строки таблицы
+td - а в ней ячейки 
+и красим их
+*/
+
+/* А теперь столбцы! */
+/* table td:nth-child(odd) {
+  background-color: #f39c12;
+} */
+
+table {
+  border-collapse: collapse;
+  border: 2px solid #34495e;
+}
+
+td,
+th {
+  border: 1px solid #34495e;
+  padding: 20px;
+}
+
+th {
+  background-color: #576f86;
+  color: white;
+}
+
+/* 
+Селектор полосатости столбцов очень точен
+И нам нужно ниже ЛИБО исполоьзвать !important
+либо сделать более точный селектор
+*/
+tfoot td {
+  background-color: #e45045;
+  color: rgb(52, 5, 5);
+}
+
+/* Полосатые строки */
+table tr:nth-child(even) td {
+  background-color: #c3e2e4;
+}
+
+/* 
+ТИПЫ ШРИФТОВ
+serif - с засечками используется в книгах и газетах
+sans-serif - без засечек используется на экранах
+monospace - моноширинный используется в коде
+fantasy - декоративный используется для заголовков
+cursive - рукописный используется для имитации почерка
+*/
+
+h1, h2, h3 {
+    font-family: "Kelly Slab", cursive;
+}
+
+body {
+    font-family: "Roboto Flex", sans-serif;
+}

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- link:css -->
+    <link rel="stylesheet" href="./lesson_3.css" />
+    <!-- CDN - BS5 иконки -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <!-- Google шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kelly+Slab&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap"
+      rel="stylesheet"
+    />
+    <title>Lesson 3</title>
+  </head>
+  <body>
+    <!-- <i class="bi bi-virus"></i> -->
+    <!-- h2{Базовая таблица HTML} -->
+    <h2>Базовая таблица HTML</h2>
+    <!-- table>tr*3>td{$}*3 -->
+    <table class="stripped-table">
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+      </tr>
+    </table>
+
+    <!-- h2{Большая простая таблица}+table.stripped-table>tr*9>td{Ячейка}*4 -->
+    <h2>Большая простая таблица</h2>
+    <table class="stripped-table">
+      <tr>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+      </tr>
+      <tr class="tr-strip">
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+      </tr>
+      <tr>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+      </tr>
+      <tr>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+      </tr>
+      <tr>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+      </tr>
+      <tr>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+      </tr>
+      <tr>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+      </tr>
+      <tr>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+      </tr>
+      <tr>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+        <td>Ячейка</td>
+      </tr>
+    </table>
+
+    <h2>Таблица с шапкой</h2>
+    <table>
+      <!-- thead - заголовок таблицы -->
+      <thead>
+        <tr>
+          <!-- th - ячейка заголовка таблицы -->
+          <th>Студент</th>
+          <th>THML и CSS</th>
+          <th>JS</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>Иванов И.И.</td>
+        <td>85</td>
+        <td>90</td>
+      </tr>
+      <tr>
+        <td>Петров П.П.</td>
+        <td>78</td>
+        <td>88</td>
+      </tr>
+    </table>
+
+    <h2>Таблица в полноценном виде</h2>
+    <!-- table>thead>tr>th*3^^tbody>tr*3>td*3^^tfoot>tr>td*3 -->
+    <table class="full-table">
+      <!-- ШАПКА -->
+      <thead>
+        <tr>
+          <!-- Ячейка в шапке -->
+          <th>Студент</th>
+          <th>Математика</th>
+          <th>Информатика</th>
+        </tr>
+      </thead>
+      <!-- КОНТЕНТ ТАБЛИЦЫ -->
+      <tbody>
+        <tr>
+          <td>Петрова</td>
+          <td>5</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>Иванов</td>
+          <td>2</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>Сидоров</td>
+          <td>3</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>Петрова</td>
+          <td>5</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>Иванов</td>
+          <td>2</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>Сидоров</td>
+          <td>3</td>
+          <td>5</td>
+        </tr>
+      </tbody>
+      <!-- ПОДВАЛ ТАБЛИЦЫ -->
+      <tfoot>
+        <tr>
+          <td>СРЕДНЕЕ</td>
+          <td>3.3</td>
+          <td>3.1</td>
+        </tr>
+      </tfoot>
+    </table>
+  </body>
+</html>
