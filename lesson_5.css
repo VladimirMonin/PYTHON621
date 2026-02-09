@@ -1,0 +1,160 @@
+/* Свойства для создания или запрета горизонтальной прокрутки
+overflow-x: hidden;  - запрет горизонтальной прокрутки
+overflow-x: scroll;  - создание горизонтальной прокрутки
+overflow-x: auto;    - создание горизонтальной прокрутки при необходимости
+
+white-space: pre-wrap;  - перенос строк внутри блока кода
+white-space: nowrap;    - запрет переноса строк внутри блока кода
+*/
+
+pre code {
+  white-space: pre-wrap; /* Перенос строк внутри блока кода */
+  overflow-x: scroll !important; /* Горизонтальная прокрутка при необходимости */
+}
+
+div.table-container {
+  overflow-x: auto; /* Горизонтальная прокрутка контейнера таблицы при необходимости */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap; /* Запрет переноса строк внутри ячеек таблицы */
+}
+
+@media (max-width: 600px) {
+  td.no-important-info {
+    display: none; /* Скрыть ячейки с классом no-important-info на экранах меньше 600px */
+  }
+  td {
+    white-space: normal; /* Разрешить перенос строк внутри ячеек таблицы на маленьких экранах */
+    min-width: 100px; /* Минимальная ширина ячеек для улучшения читаемости */
+  }
+}
+
+/* ПСЕВДОЭЛЕМЕНТЫ! НА ПРИМЕРЕ ЦИТАТ
+И   &#10078; &#10077; 
+*/
+
+/* 
+position:
+static - по умолчанию
+relative - относительно своего нормального положения
+absolute - относительно ближайшего позиционированного предка
+fixed - относительно окна браузера
+sticky - прилипает при прокрутке
+
+*/
+blockquote {
+  position: relative;
+  padding: 1em 2em;
+  margin: 1em 0;
+  border-left: 5px solid #898422;
+  background: #f6e3aa;
+}
+
+blockquote::before {
+  content: "❝"; /* Левые кавычки */
+  position: absolute;
+  top: -0.2em;
+  left: 0.2em;
+  font-size: 3em;
+  color: #898422;
+}
+
+blockquote::after {
+  content: "❞"; /* Правые кавычки */
+  position: absolute;
+  bottom: -0.3em;
+  right: 0.2em;
+  font-size: 3em;
+  color: #898422;
+}
+
+/* Плавная прокрутка сайта */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Приколотим header к верху страницы */
+header {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 1000; /* Чтобы header был поверх другого контента */
+}
+
+/* Стили для навигационного меню */
+nav ul li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 10px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+}
+/* 
+Псевдокласс :hover позволяет изменять стили элемента при наведении курсора мыши на этот элемент.
+*/
+nav ul li:hover {
+  background-color: #e0e0e0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transform: scale(1.03);
+  transition: all 0.1s ease;
+}
+/* ================================================================= */
+/* Знакомство с FlexBox */
+
+div.box {
+  background-color: #ebaeae;
+  border: 1px solid #000000;
+  height: 100px;
+  width: 100px;
+  text-align: center;
+}
+
+div.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 500px;
+  background-color: #d3f4ff;
+  border: 2px solid #000000;
+  flex-direction:row-reverse;
+}
+
+/* 
+justify-content - главная ось
+- flex-start - элементы прижаты к началу контейнера
+- flex-end - элементы прижаты к концу контейнера
+- center - элементы по центру контейнера
+- space-between - равномерное распределение элементов с равными промежутками между ними
+- space-around - равномерное распределение элементов с равными промежутками вокруг них
+
+align-items - поперечная ось
+- flex-start - элементы прижаты к началу поперечной оси
+- flex-end - элементы прижаты к концу поперечной оси
+- center - элементы по центру поперечной оси
+- stretch - элементы растягиваются на всю высоту контейнера
+- baseline - элементы выравниваются по базовой линии текста
+
+flex-direction:
+- row - элементы располагаются в строку (по умолчанию)
+- column - элементы располагаются в столбик
+- row-reverse - элементы располагаются в строку в обратном порядке
+- column-reverse - элементы располагаются в столбик в обратном порядке
+*/

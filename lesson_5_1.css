@@ -1,0 +1,31 @@
+div.container {
+  display: flex;
+  flex-direction: column;
+}
+
+div.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 250px;
+  height: 400px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  background-color: #b6dceb;
+}
+<div class="cards-catalog">
+div.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.03);
+  transition: all 0.2s ease;
+}
+
+/* Новые стили для изображения */
+div.image img {
+  width: 100%; /* Занимает всю ширину контейнера div.image */
+  height: 200px; /* Фиксированная высота, адаптируйте под нужды */
+  object-fit: cover; /* Обрезает изображение, чтобы заполнить контейнер */
+  object-position: center; /* Центрирует видимую часть; измените на 'top' для показа верхней части, 'bottom' для нижней и т.д. */
+  border-radius: 5px; /* Опционально, для скругления углов */
+}

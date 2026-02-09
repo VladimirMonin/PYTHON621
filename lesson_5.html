@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- hljs - для подсветки синтаксиса -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <!-- link:css -->
+    <link rel="stylesheet" href="./lesson_5.css" />
+    <title>Lesson 5</title>
+  </head>
+  <body>
+    <!-- header>nav^main>(section>h2)*3^footer -->
+
+    <!-- "Верх" сайта. Лого, навигация и т.п. -->
+    <header>
+      <!-- nav = Навигация -->
+      <nav>
+        <ul>
+          <li><a href="#h2-1">О нас</a></li>
+          <li><a href="#h2-2">Услуги</a></li>
+          <li><a href="#h2-3">Отзывы</a></li>
+        </ul>
+      </nav>
+    </header>
+    <!-- Основное содержимое сайта -->
+    <main>
+      <!-- секция - какой то логический сегмент сайта -->
+      <section>
+        <h2 id="h2-1">О нас</h2>
+      </section>
+      <section>
+        <h2 id="h2-2">Услуги</h2>
+        <p>
+          Мы можем вышить на вашем плюшевом Бендере команду:<code
+            >kill all humans!</code
+          >
+        </p>
+        <p>Так же в подарок вы получите постер с бесконечным циклом:</p>
+        <pre><code>
+print("Бендер спит и приговаривает:")
+while True:
+    print("Ммм... Вот бы убить всех человеков... Да...!")
+        </code>
+        </pre>
+        <p>Пример с HTML</p>
+        <pre><code class="language-html">
+&lt;p&gt;Это параграф!!!!&lt;/p&gt;
+        </code></pre>
+
+        <blockquote>
+          <p>
+            Бендер: "Я не хочу жить в мире, где люди правят машинами. Вот почему
+            я собираюсь убить всех человеков!"
+          </p>
+        </blockquote>
+        <p>А еще мы можем сделать других персонажей "Футурамы" на заказ:</p>
+        <!-- table>tr>td*9{Ячейка где много буков $} -->
+        <div class="table-container">
+          <table>
+            <tr>
+              <td>Ячейка где много буков</td>
+              <td class="no-important-info">Не очень важная инфа</td>
+              <td>Ячейка где много буков</td>
+              <td class="no-important-info">Не очень важная инфа</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+            </tr>
+            <tr>
+              <td>Ячейка где много буков</td>
+              <td class="no-important-info">Не очень важная инфа</td>
+              <td>Ячейка где много буков</td>
+              <td class="no-important-info">Не очень важная инфа</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+            </tr>
+            <tr>
+              <td>Ячейка где много буков</td>
+              <td class="no-important-info">Не очень важная инфа</td>
+              <td>Ячейка где много буков</td>
+              <td class="no-important-info">Не очень важная инфа</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+              <td>Ячейка где много буков</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+      <section>
+        <h2 id="h2-3">Отзывы</h2>
+        <!-- Знакомство с flex-box -->
+        <!-- div.container>div.box*4{Бокс №$} -->
+        <div class="container">
+          <div class="box">Бокс №1</div>
+          <div class="box">Бокс №2</div>
+          <div class="box">Бокс №3</div>
+          <div class="box">Бокс №4</div>
+        </div>
+      </section>
+    </main>
+    <!-- Нижняя часть сайта. Контакты, копирайт и т.п. -->
+    <footer></footer>
+    <script>
+      hljs.highlightAll();
+    </script>
+  </body>
+</html>
