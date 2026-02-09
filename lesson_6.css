@@ -58,24 +58,47 @@ footer {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  gap: 5rem;
+  gap: 3rem;
+  padding: 2rem;
 }
 
 div.card {
-  width: 200px;
-  height: 300px;
-  background-color: #f0f0f0;
-  border-radius: 8px;
+  width: 280px;
+  min-height: 450px;
+  background: linear-gradient(145deg, #ffffff, #f5f5f5);
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+div.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+div.card h3 {
+  text-align: center;
+  padding: 1.5rem 1rem 1rem;
+  margin: 0;
+  font-size: 1.8rem;
+  color: #011020;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 div.image-container {
   overflow: hidden;
   width: 100%;
-  height: 60%;
+  height: 200px;
+  background-color: #e8e8e8;
 }
 
 div.image-container img {
@@ -83,64 +106,142 @@ div.image-container img {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transition: transform 0.3s ease;
+}
+
+div.card:hover div.image-container img {
+  transform: scale(1.05);
+}
+
+div.card-text {
+  padding: 1.5rem 1.5rem 1rem;
+  flex-grow: 1;
+  display: flex;
+  align-items: flex-start;
+}
+
+div.card-text p {
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: #333;
+  text-align: center;
 }
 
 div.button-group {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
+  align-items: center;
   justify-content: center;
+  padding: 1.5rem;
+  width: 100%;
+  background: linear-gradient(to top, rgba(1, 16, 32, 0.03), transparent);
 }
 
 div.button-group button {
-  padding: 0.5rem 1rem;
+  padding: 0.8rem 1.4rem;
   border: none;
-  border-radius: 4px;
-  background-color: #011020;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #011020, #012a4a);
   color: #fff;
   cursor: pointer;
-  font-size: 0.6rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(1, 16, 32, 0.2);
 }
 
-div.card-text {
-  padding: 0 1rem;
+div.button-group button:hover {
+  background: linear-gradient(135deg, #012a4a, #013a64);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(1, 16, 32, 0.3);
+}
+
+div.button-group button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(1, 16, 32, 0.2);
 }
 
 div.price {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: bold;
-  background-color: #f0c70e;
-  width: 50px;
-  height: 50px;
+  background: linear-gradient(135deg, #f0c70e, #ffdc40);
+  color: #011020;
+  min-width: 65px;
+  height: 65px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 4px 12px rgba(240, 199, 14, 0.4);
+  transition: all 0.3s ease;
+  border: 3px solid #fff;
+}
+
+div.card:hover div.price {
+  transform: rotate(5deg) scale(1.05);
+  box-shadow: 0 6px 16px rgba(240, 199, 14, 0.6);
 }
 
 @media (max-width: 400px) {
   html {
-    font-size: 6px;
+    font-size: 8px;
   }
+
   .products-list {
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 3rem;
+    padding: 1.5rem;
   }
+
   div.card {
-    width: 80%;
-    height: 400px;
+    width: 95%;
+    min-height: 520px;
   }
+
+  div.card h3 {
+    font-size: 2.2rem;
+    min-height: 65px;
+    padding: 1.8rem 1.2rem 1.2rem;
+  }
+
+  div.image-container {
+    height: 240px;
+  }
+
   .button-text {
     display: none;
   }
 
+  div.button-group {
+    padding: 1.8rem 1.5rem;
+    gap: 1.2rem;
+  }
+
   div.button-group button {
-    padding: 0.5rem;
-    width: 40px;
-    height: 20px;
+    padding: 1.2rem;
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    justify-content: center;
   }
 
   div.card-text {
-    padding: 0 0.5rem;
+    padding: 1.5rem 1.8rem 1.2rem;
+  }
+
+  div.card-text p {
+    font-size: 1.6rem;
+    line-height: 1.6;
+  }
+
+  div.price {
+    min-width: 70px;
+    height: 70px;
+    font-size: 1.8rem;
+    border: 4px solid #fff;
   }
 }
