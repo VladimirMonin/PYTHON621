@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lesson 7</title>
+    <link rel="stylesheet" href="./lesson_7.css" />
+  </head>
+  <body>
+    <h1>Знакомство с формами</h1>
+    <!-- 
+    Get - по умолнчанию. Данные из формы будут отображаться в адресной строке.
+    vk.com?passowrd=123456&login=ivan+ivnov
+    Post - данные из формы не отображаются в адресной строке, а отправляются на сервер.
+    -->
+    <form method="get" action="">
+      <!-- http://127.0.0.1:5500/lesson_7.html?main-input=dannye -->
+      <input type="text" name="main-input" id="" />
+      <button>Отправить</button>
+    </form>
+
+    <form method="post" action="">
+      <input
+        type="email"
+        name="user-email"
+        id=""
+        required
+        pattern="[A-Za-z]{2,}@[A-Za-z]{2,}\.[A-Za-z]{2,}"
+        title="Введите что-то похожее на емейл"
+        placeholder="Ваше мыло"
+      />
+      <input
+        type="password"
+        name="user-password"
+        id=""
+        required
+        pattern="(?=.*[a-z])(?=.*[A-Z])[A-Za-z]{9,}"
+        title="Пароль должен содержать минимум одну заглавную и одну строчную букву, и быть не менее 9 символов в длину"
+        placeholder="Ваш пароль"
+      />
+      <input type="checkbox" name="remember-me" id="" />
+      <!-- <input type="submit" value="Отправить"> -->
+      <button>Отправить</button>
+    </form>
+    <h2>Форма №3 C Подписью</h2>
+    <form action="">
+      <label for="email-input">Ваш email</label>
+      <input
+        type="email"
+        name="email-input"
+        id="email-input"
+        required
+        pattern="[A-Za-z]{2,}@[A-Za-z]{2,}\.[A-Za-z]{2,}"
+        title="Введите что-то похожее на емейл"
+        placeholder="Ваше мыло"
+      />
+      <button>Отправить</button>
+    </form>
+    <h2>Формы c файлами и картинками</h2>
+    <form action="" method="post" enctype="multipart/form-data">
+      <input
+        type="file"
+        name="user-file"
+        id=""
+        accept=".doc, .docx, .pdf, .csv, .xlsx, .xls"
+      />
+      <button>Отправить</button>
+    </form>
+    <h2>Разные типы инпутов</h2>
+    <form action="">
+      <input type="color" name="color" id="" value="#FFA07A" />
+      <input type="date" name="date" id="" />
+      <input type="time" name="time" id="" />
+      <input type="range" name="range" id="" min="0" max="100" value="25"/>
+      <input type="reset" value="Сбросить" />
+      <!-- http://127.0.0.1:5500/lesson_7.html?color=%23ffa07a&date=2026-02-20&time=22%3A22&range=90 -->
+      <button>Отправить</button>
+    </form>
+
+    <h2>Радиокнопки</h2>
+    <form action="">
+        <!-- http://127.0.0.1:5500/lesson_7.html?radio-product=meat -->
+        <input type="radio" name="radio-product" id="" checked
+        value="fish">Рыба
+        <input type="radio" name="radio-product" id="" value="meat">Мясо
+        <input type="radio" name="radio-product" id="" value="chicken">Курица
+        <!-- Группа чекбоксов доп. опций водичка, вкусняшка, алкоголь -->
+        <input type="checkbox" name="options" id="" value="water">Водичка
+        <input type="checkbox" name="options" id="" value="treat">Вкусняшка
+        <input type="checkbox" name="options" id="" value="alcohol">Алкоголь
+        <!-- http://127.0.0.1:5500/lesson_7.html?radio-product=meat&options=treat&options=alcohol -->
+        <button>Отправить радиокнопки</button>
+    </form>
+    <!-- Форма с text area и select -->
+    <form action="">
+        <textarea name="user-message" id="" cols="30" rows="10" placeholder="Ваше сообщение"></textarea>
+        <select name="user-select" id="">
+            <option value="option-1">Опция 1</option>
+            <option value="option-2">Опция 2</option>
+            <option value="option-3">Опция 3</option>
+        </select>
+        <!-- http://
+  </body>
+</html>
