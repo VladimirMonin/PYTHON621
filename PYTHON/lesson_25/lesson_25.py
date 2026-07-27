@@ -9,28 +9,45 @@
 import logging
 from utils import fun_foo, divide_foo
 
-# Базовый вариант конфига для логгера
+# 1. Общий корневой логгер
+root_logger = logging.getLogger()
 
-"""
-%(levelname)s	Уровень лога
-%(asctime)s	Дата и время
-%(name)s	Имя логгера
-%(message)s	Текст сообщения
-INFO | 2026-07-27 21:16:44,962 | __main__ | Программа запущена
+# 2. Указываю минимальный уровень сообщений
+root_logger.setLevel(logging.DEBUG)
+
+# 3. Описываем внешний вид сообщений
+formatter = logging.Formatter(
+    fmt="%(levelname)s | %(asctime)s | %(name)s | %(message)s"
+)
+
+# 4. Создаем обработчик для терминала
+console_handler = logging.StreamHandler()
+
+# 5. Передаем ему формат в котором он должен работать
+console_handler.setFormatter(formatter)
+
+#6. Подключаем обработкчик к общему логгеру
+root_logger.addHandler(console_handler)
+
+# 7. Создаем filehandler Для записи логов в файл
+file_handler = logging.FileHandler(
+    filename="lesson_25.log",
+    mode="w",
+    encoding="utf-8"
+
+)
+
+# 8. Указываем форматтер и подклчаем к логгеру
+file_handler.setFormatter(formatter)
+root_logger.addHandler(file_handler)
 
 
-filename - имя файла лога
-filemode - w - перезапись, a - дозапись
-"""
-logging.basicConfig(level=logging.INFO,
-                    format="%(levelname)s | %(asctime)s | %(name)s | %(message)s",
-                    filename="lesson_25.log",
-                    encoding="utf-8",
-                    filemode="w"
-                    )
 
-# Создаем логгер. Тут можно задать его имя. Без этого это будет root
+#9. Создаем логгер для модуля
 logger = logging.getLogger(__name__)
+
+
+
 
 logger.info("Программа запущена")
 logger.debug("Кот чихнул!")
