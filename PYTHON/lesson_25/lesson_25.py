@@ -7,7 +7,7 @@
 """
 
 import logging
-from utils import fun_foo
+from utils import fun_foo, divide_foo
 
 # Базовый вариант конфига для логгера
 
@@ -37,3 +37,7 @@ logger.debug("Кот чихнул!")
 
 # Так как функция импортирована из utils.py имя логера __name__ тут будет utils
 fun_foo()
+
+a = int(input("Введите число а"))
+b = int(input("Введите число b"))
+divide_foo(a, b)
