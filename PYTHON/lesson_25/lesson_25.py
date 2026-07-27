@@ -8,7 +8,7 @@
 
 import logging
 from utils import fun_foo, divide_foo
-
+from logging.handlers import RotatingFileHandler
 
 # Обработчик терминала
 console_handler = logging.StreamHandler()
@@ -16,10 +16,13 @@ console_handler.setLevel(logging.INFO)
 
 
 # Обработчик файла
-file_handler = logging.FileHandler(
+file_handler = RotatingFileHandler(
     filename="lesson_25.log",
     encoding="utf-8",
+    maxBytes=1_000_000,
+    backupCount=3
 )
+
 file_handler.setLevel(logging.DEBUG)
 
 
@@ -46,3 +49,7 @@ fun_foo()
 a = int(input("Введите число а"))
 b = int(input("Введите число b"))
 divide_foo(a, b)
+
+
+for number in range(1000):
+    logger.debug(f"Отладочное сообщение №{number} кот чихнул!")
