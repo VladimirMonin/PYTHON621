@@ -1,4 +1,5 @@
 import logging
+from logging.handlers import RotatingFileHandler
 
 
 def setup_logging() -> None:
@@ -7,13 +8,15 @@ def setup_logging() -> None:
     console_handler.setLevel(logging.INFO)
 
     # В файл отправляем DEBUG и выше
-    file_handler = logging.FileHandler(
+    file_handler = RotatingFileHandler(
         filename="lesson_25.log",
+        maxBytes=1_000_000,
+        backupCount=1,
         encoding="utf-8",
     )
     file_handler.setLevel(logging.DEBUG)
 
-    # Общая настройка
+    # Общая настройка логирования
     logging.basicConfig(
         level=logging.DEBUG,
         format="%(levelname)s | %(asctime)s | %(name)s | %(message)s",
