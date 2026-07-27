@@ -22,6 +22,7 @@ formatter = logging.Formatter(
 
 # 4. Создаем обработчик для терминала
 console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.DEBUG)
 
 # 5. Передаем ему формат в котором он должен работать
 console_handler.setFormatter(formatter)
