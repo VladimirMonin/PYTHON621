@@ -7,6 +7,7 @@
 """
 
 import logging
+from utils import fun_foo
 
 # Базовый вариант конфига для логгера
 
@@ -17,12 +18,14 @@ import logging
 %(message)s	Текст сообщения
 INFO | 2026-07-27 21:16:44,962 | __main__ | Программа запущена
 """
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s | %(levelname)s | %(name)s | %(message)s"
-)
+logging.basicConfig(level=logging.INFO,
+                    format="%(levelname)s | %(asctime)s | %(name)s | %(message)s")
 
 # Создаем логгер. Тут можно задать его имя. Без этого это будет root
 logger = logging.getLogger(__name__)
 
 logger.info("Программа запущена")
 logger.debug("Кот чихнул!")
+
+# Так как функция импортирована из utils.py имя логера __name__ тут будет utils
+fun_foo()
