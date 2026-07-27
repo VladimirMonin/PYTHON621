@@ -8,11 +8,10 @@
 
 import logging
 from utils import fun_foo, divide_foo
-from logging.handlers import TimedRotatingFileHandler
 
-# Обработчик терминала
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
+from logging_config import setup_logging
+setup_logging()
+
 
 """
 "S"	Секунды
@@ -31,30 +30,6 @@ console_handler.setLevel(logging.INFO)
     encoding="utf-8",
 )
 """
-
-
-# Обработчик файла
-file_handler = TimedRotatingFileHandler(
-    filename="lesson_25.log",
-    when="midnight",
-    interval=1,
-    backupCount=7,
-    encoding="utf-8",
-)
-
-file_handler.setLevel(logging.DEBUG)
-
-
-# Общая настройка логирования
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(levelname)s | %(asctime)s | %(name)s | %(message)s",
-    handlers=[
-        console_handler,
-        file_handler,
-    ],
-)
-
 
 logger = logging.getLogger(__name__)
 
