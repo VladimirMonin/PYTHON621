@@ -1,0 +1,7 @@
+.incorrect-password {
+  border: 1px solid red;
+}
+.correct-password {
+  border: 1px solid green;
+}
+

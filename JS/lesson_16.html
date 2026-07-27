@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .red {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+      }
+      .blue {
+        width: 100px;
+        height: 100px;
+        background-color: blue;
+        border-radius: 50%;
+      }
+
+      .card-container {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .card {
+        width: 200px;
+        height: 300px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+      }
+      .card-sale {
+        background-color: #ffcccc;
+        border-color: #ff0000;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>DOM и манипулирование элементами</h1>
+    <p>
+      DOM - это объектная модель документа, которая позволяет JavaScript
+      взаимодействовать с HTML и изменять его содержимое.
+    </p>
+    <!-- Коммент - тоже является узлом в DOM -->
+    <ul>
+      <li>Элемент списка 1</li>
+      <li>Элемент списка 2</li>
+      <li>Элемент списка 3</li>
+      <li>Элемент списка 4</li>
+      <li>Элемент списка 5</li>
+    </ul>
+    <!-- ul#productList -->
+    <ul id="productList"></ul>
+
+    <div class="red" onclick="divOnClick()">Красный</div>
+
+    <div class="card-container"></div>
+    <script src="./lesson_16.js"></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* sync-demo.css */
+      .shape {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .red-square {
+        background-color: crimson;
+        border-radius: 0;
+      }
+
+      .blue-circle {
+        background-color: royalblue;
+        border-radius: 50%;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- sync-demo.html -->
+    <div id="shape" class="shape red-square"></div>
+    <button id="startSync">Запустить синхронную анимацию</button>
+    <button id="otherAction">Другая функция</button>
+    <button id="startAsync">Запустить асинхронную анимацию</button>
+    <script src="./lesson_19.js"></script>
+  </body>
+</html>

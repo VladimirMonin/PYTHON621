@@ -1,0 +1,8 @@
+{
+  "baseURL": "https://polza.ai/api/v1",
+  "api_key": "xxxxxxxxxxxxxx",
+  "model": "google/gemma-4-31b-it",
+  "image": false,
+  "prompt_files": ["./prompt.txt"],
+  "task_file": "./task.txt"
+}

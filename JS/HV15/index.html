@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HV15 — Мини-панель продажи билетов</title>
+
+    <!-- Подключаем только внешний шрифт, чтобы страница выглядела аккуратно и современно -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Подключаем только набор иконок Bootstrap Icons, без готовых Bootstrap-компонентов -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Основное оформление полностью написано в собственном CSS-файле -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Главный контейнер страницы. Внутри него лежат все смысловые блоки интерфейса -->
+    <main class="page">
+        <!-- Верхняя часть страницы: название проекта и краткое описание назначения интерфейса -->
+        <header class="page__header">
+            <p class="page__eyebrow"><i class="bi bi-film"></i> Эталонное решение HW №15</p>
+            <h1>Мини-панель продажи билетов</h1>
+            <p class="page__description">
+                На странице объединены схема зала, форма продажи билета, таблица проданных мест
+                и фильтрация по имени покупателя.
+            </p>
+        </header>
+
+        <!-- Общая рабочая область из двух панелей: слева схема зала, справа управляющие элементы -->
+        <div class="layout">
+            <!-- Левая панель. Здесь находится только визуальная часть зала и легенда статусов -->
+            <section class="panel" aria-labelledby="hall-title">
+                <div class="panel__heading">
+                    <h2 id="hall-title"><i class="bi bi-collection"></i> Схема зала</h2>
+                </div>
+
+                <!-- Подпись экрана нужна для визуальной ассоциации с кинозалом -->
+                <div class="screen">Экран</div>
+
+                <!-- Легенда помогает сразу понять, какой цвет означает свободное или проданное место -->
+                <div class="legend" aria-label="Легенда схемы зала">
+                    <div class="legend__item">
+                        <span class="legend__marker legend__marker--free"></span>
+                        <span>Свободно</span>
+                    </div>
+                    <div class="legend__item">
+                        <span class="legend__marker legend__marker--sold"></span>
+                        <span>Продано</span>
+                    </div>
+                </div>
+
+                <!-- Сюда JavaScript добавляет квадратики мест -->
+                <div id="hall" class="hall" aria-label="Схема мест кинозала"></div>
+            </section>
+
+            <!-- Правая панель. Здесь расположены форма продажи, фильтр и таблица продаж -->
+            <section class="panel" aria-labelledby="sales-title">
+                <div class="panel__heading panel__heading--between">
+                    <h2 id="sales-title"><i class="bi bi-ticket-perforated"></i> Продажа билета</h2>
+                    <p class="sold-counter">Продано мест: <span id="sold-count">0</span> / 20</p>
+                </div>
+
+                <!-- Форма продажи -->
+                <form id="sale-form" class="sale-form" novalidate>
+                    <!-- Группа полей формы. Все поля собраны в один ряд, а на узком экране складываются в колонку -->
+                    <div class="form-row-group">
+                        <label class="form-field" for="buyer-input">
+                            <span>Имя покупателя</span>
+                            <input id="buyer-input" name="buyer" type="text" placeholder="Например, Марина">
+                        </label>
+
+                        <label class="form-field" for="row-input">
+                            <span>Ряд</span>
+                            <input id="row-input" name="row" type="number" min="1" max="4" placeholder="1">
+                        </label>
+
+                        <label class="form-field" for="seat-input">
+                            <span>Место</span>
+                            <input id="seat-input" name="seat" type="number" min="1" max="5" placeholder="1">
+                        </label>
+                    </div>
+
+                    <!-- Основная кнопка запускает отправку формы и обработку продажи -->
+                    <button class="primary-button" type="submit">
+                        <i class="bi bi-check2-circle"></i>
+                        <span>Продать билет</span>
+                    </button>
+                </form>
+
+                <!-- Служебное сообщение об успехе или ошибке -->
+                <p id="form-message" class="message is-hidden" aria-live="polite"></p>
+
+                <div class="panel__divider"></div>
+
+                <!-- Поле фильтрации таблицы -->
+                <label class="form-field form-field--filter" for="filter-input">
+                    <span><i class="bi bi-search"></i> Фильтр по имени покупателя</span>
+                    <input id="filter-input" type="text" placeholder="Начните вводить имя...">
+                </label>
+
+                <!-- Таблица показывает только проданные места. Её строки создаются из массива через JavaScript -->
+                <div class="table-wrapper">
+                    <table class="sales-table">
+                        <thead>
+                            <tr>
+                                <th>Покупатель</th>
+                                <th>Ряд</th>
+                                <th>Место</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sales-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- Этот блок становится видимым только тогда, когда фильтр не находит ни одной строки -->
+                <p id="empty-state" class="empty-state is-hidden">
+                    <i class="bi bi-emoji-frown"></i>
+                    <span>Ничего не найдено.</span>
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Вся логика страницы вынесена в отдельный JS-файл -->
+    <script src="script.js" defer></script>
+</body>
+</html>

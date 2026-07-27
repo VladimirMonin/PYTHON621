@@ -1,0 +1,13 @@
+{
+  "baseURL": "https://polza.ai/api/v1",
+  "api_key": "xxxxxxxxxxxxxx",
+  "model": "google/gemma-4-31b-it",
+  "image": false,
+  "prompt_files": [
+    "./tech_writer.md",
+    "lesson_18_transcription.txt",
+    "lesson_18.py",
+    "lesson_18_2.py"
+  ],
+  "task_file": "./task.txt"
+}
