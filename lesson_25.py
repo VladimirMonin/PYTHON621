@@ -9,7 +9,17 @@
 import logging
 
 # Базовый вариант конфига для логгера
-logging.basicConfig(level=logging.INFO)
+
+"""
+%(levelname)s	Уровень лога
+%(asctime)s	Дата и время
+%(name)s	Имя логгера
+%(message)s	Текст сообщения
+INFO | 2026-07-27 21:16:44,962 | __main__ | Программа запущена
+"""
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+)
 
 # Создаем логгер. Тут можно задать его имя. Без этого это будет root
 logger = logging.getLogger(__name__)
