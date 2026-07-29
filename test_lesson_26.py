@@ -1,13 +1,17 @@
 from lesson_26 import divide_foo
 import pytest
 
-def test_positiv_divide_foo():
-    assert divide_foo(12, 3) == 3.0
-    assert divide_foo(10, 2) == 5.0
-    assert divide_foo(9, 3) == 3.0
-    
+
+@pytest.mark.parametrize(
+    ("a", "b", "expected"), [(10, 2, 5), (20, 2, 10), (-10, -2, 5)]
+)
+def test_positiv_divide_foo(a: int, b: int, expected: float):
+    assert divide_foo(a, b) == expected
 
 
-def test_zero_divide_foo():
-    with pytest.raises(ZeroDivisionError):
-        divide_foo(10, 0)
+@pytest.mark.parametrize(
+    ("a", "b", "expected_exception"), [(10, 0, ZeroDivisionError), ("20", 2, ValueError), (-10, "-2", ValueError)]
+)
+def test_exceptions_divide_foo(a, b, expected_exception):
+    with pytest.raises(expected_exception):
+        divide_foo(a, b)
