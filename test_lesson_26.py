@@ -1,4 +1,4 @@
-from lesson_26 import divide_foo
+from PYTHON.lesson_26 import divide_foo
 import pytest
 
 
