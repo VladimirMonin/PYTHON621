@@ -27,11 +27,12 @@ class Order:
         self.items.append({"position": position, "amount": amount})
         self.total += amount
 
-    def get_region(self) -> str:
-        return self.region
-
     def set_region(self, region: str):
-        self.region = region
+        if region in self.available_regions:
+            self.region = region
+        else:
+            raise ValueError("Недопустимый регион")
+
 
     @classmethod
     def set_available_regions(cls, regions: list):
@@ -43,13 +44,15 @@ class Order:
 
 
 order_1 = Order("Фёдор Сумкин", "Шир")
+Order.set_available_regions(["Шир", "Лихолесье", "Мордор", "Южное Бутово"])
+order_1.set_region("Южное Бутово")
 order_1.add_item("Чехол для кольца всевластия", 1)
 order_1.add_item("Удобные тапочки", 1)
 
 print("Имя клиента:", order_1.customer_name)
 print("Товары:", order_1.items)
 print("Общая стоимость:", order_1.total)
-print("Регион:", order_1.get_region())
+print("Регион:", order_1.region)
 
 print(order_1.validate_phone("1234567890"))
 print(Order.validate_phone("1234567890"))
