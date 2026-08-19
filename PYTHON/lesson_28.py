@@ -15,27 +15,41 @@ add_item()
 calculate_total()"""
 
 class Order:
-    def __init__(self, customer_name: str):
+    available_regions = ["Шир", "Лихолесье", "Мордор"]
+
+    def __init__(self, customer_name: str, region: str):
         self.customer_name = customer_name
         self.items: list = []
         self.total: int = 0
+        self.region = region
 
     def add_item(self, position: str, amount: int):
         self.items.append({"position": position, "amount": amount})
         self.total += amount
+
+    def get_region(self) -> str:
+        return self.region
+
+    def set_region(self, region: str):
+        self.region = region
+
+    @classmethod
+    def set_available_regions(cls, regions: list):
+        cls.available_regions = regions
 
     @staticmethod
     def validate_phone(phone: str) -> bool:
         return len(phone) == 10 and phone.isdigit()
 
 
-order_1 = Order("Фёдор Сумкин")
+order_1 = Order("Фёдор Сумкин", "Шир")
 order_1.add_item("Чехол для кольца всевластия", 1)
 order_1.add_item("Удобные тапочки", 1)
 
 print("Имя клиента:", order_1.customer_name)
 print("Товары:", order_1.items)
 print("Общая стоимость:", order_1.total)
+print("Регион:", order_1.get_region())
 
 print(order_1.validate_phone("1234567890"))
 print(Order.validate_phone("1234567890"))
