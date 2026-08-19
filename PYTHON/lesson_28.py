@@ -52,3 +52,24 @@ item_3 = Item(**data_item_3)
 order = Order(item_1, item_2, item_3)
 print(order)
 
+
+# Агрегация - когда один объект содержит другой объект как его атрибут
+# Композиция - когда один объект содержит другой объект как его составляющую
+
+class Wheel:
+    """
+    Класс колесо
+    """
+    def __init__(self, size: int):
+        self.size = size
+
+
+class Car:
+    """
+    Класс машина
+    """
+    def __init__(self, make: str, model: str):
+        self.make = make
+        self.model = model
+        self.wheels = [Wheel(size=18) for _ in range(4)]
+
