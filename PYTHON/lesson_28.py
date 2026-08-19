@@ -20,18 +20,35 @@ class Item:
         self.total_price: float = self.price * self.quantity
 
     def __str__(self):
-        return f"{self.name} - {self.price} руб., {self.quantity} шт. Общая стоимость: {self.total_price} руб."
+        return f"{self.name} - {self.price} руб., {self.quantity} шт. Общая стоимость: {self.total_price} руб.\n"
+
+
+class Order:
+    def __init__(self, *items: Item):
+        self.items = list(items)
+
+    def total_price(self):
+        return sum(item.total_price for item in self.items)
+
+    def add_item(self, item: Item):
+        self.items.append(item)
+
+    def __str__(self):
+        return f"Ваш заказ:\n{', '.join(str(item) for item in self.items)}\nОбщая стоимость: {self.total_price()} руб."
+
+
+
 
 
 
 item_1 = Item("Чебурек", 100, "Выпечка", 5)
 item_2 = Item("Котлета", 50, "Мясные блюда", 2)
-print(item_1)
-print(item_2)
 
 data_item_3 = {"name": "Пюре", "price": 40, "category": "Гарнир", "quantity": 1}
 # item_3 = Item(name=data_item_3["name"], price=data_item_3["price"], category=data_item_3["category"], quantity=data_item_3["quantity"])
 
 item_3 = Item(**data_item_3)
-print(item_3)
+
+order = Order(item_1, item_2, item_3)
+print(order)
 
