@@ -24,6 +24,10 @@ class Order:
         self.items.append({"position": position, "amount": amount})
         self.total += amount
 
+    @staticmethod
+    def validate_phone(phone: str) -> bool:
+        return len(phone) == 10 and phone.isdigit()
+
 
 order_1 = Order("Фёдор Сумкин")
 order_1.add_item("Чехол для кольца всевластия", 1)
@@ -32,3 +36,6 @@ order_1.add_item("Удобные тапочки", 1)
 print("Имя клиента:", order_1.customer_name)
 print("Товары:", order_1.items)
 print("Общая стоимость:", order_1.total)
+
+print(order_1.validate_phone("1234567890"))
+print(Order.validate_phone("1234567890"))
