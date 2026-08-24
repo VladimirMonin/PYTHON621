@@ -73,3 +73,36 @@ class Car:
         self.model = model
         self.wheels = [Wheel(size=18) for _ in range(4)]
 
+
+
+##########################
+
+
+class Cofnig:
+    def __init__(self, file_path: str):
+        self.file_path = file_path
+        self.baseURL
+        self.api_key
+        self.model
+        self.image
+        self.load_config()
+
+    def load_config(self):
+        with open(self.file_path, "r", encoding="utf8") as file:
+            config = json.load(file)
+            self.baseURL = config["baseURL"]
+            self.api_key = config["api_key"]
+            self.model = config["model"]
+            self.image = config["image"]
+
+
+class OpenAIRequest:
+    def __init__(self, config: Cofnig, message: str):
+        self.config = config
+        self.message = message
+        self.client = OpenAI(
+            base_url=self.config.baseURL,
+            api_key=self.config.api_key,
+        )
+
+
