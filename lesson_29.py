@@ -39,12 +39,17 @@ class Car:
 
     @max_speed.setter
     def max_speed(self, new_speed: int):
+        self.__max_speed = self.__max_speed_vadidator(new_speed)
+
+
+    def __max_speed_vadidator(self, new_speed: int) -> int:
         if self.min_speed_limit < new_speed < self.max_speed_limit:
-            self.__max_speed = new_speed
+            return new_speed
         else:
             raise ValueError(
                 f"Максимальная скорость должна быть в диапазоне от {self.min_speed_limit} до {self.max_speed_limit} км/ч"
             )
+
 
     
 
@@ -63,7 +68,7 @@ print(car1)
 print(car1)
 # car1.start()
 
-car1.max_speed = 300
+car1.max_speed = 600
 print(car1.max_speed)
 
 print(car1)
