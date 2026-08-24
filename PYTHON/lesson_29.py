@@ -91,15 +91,28 @@ class Config:
     supported_base_urls = ["https://polza.ai/api/v1", "https://openrouter.ai/api/v1"]
 
     def __init__(self, file_path: str):
-        self.file_path = file_path
-        self.baseURL: str = ""
-        self.api_key: str = ""
-        self.model: str = ""
+        self.__file_path = file_path
+        self.__baseURL: str = ""
+        self.__api_key: str = ""
+        self.__model: str = ""
         self.__config_file: dict = {}
         self.__load_config()
 
+    @property
+    def baseURL(self):
+        return self.__baseURL
+
+    @property
+    def api_key(self):
+        return self.__api_key
+
+    @property
+    def model(self):
+        return self.__model
+
+
     def __load_config(self):
-        with open(self.file_path, "r", encoding="utf8") as file:
+        with open(self.__file_path, "r", encoding="utf8") as file:
             self.__config_file = json.load(file)
 
         # Валидация данных
@@ -108,9 +121,9 @@ class Config:
         self.__set_is_vision_model()
 
         # Если все хорошо, то сохраняем данные
-        self.baseURL = self.__config_file["baseURL"]
-        self.api_key = self.__config_file["api_key"]
-        self.model = self.__config_file["model"]
+        self.__baseURL = self.__config_file["baseURL"]
+        self.__api_key = self.__config_file["api_key"]
+        self.__model = self.__config_file["model"]
 
     def __model_validate(self):
         if self.__config_file["model"] not in self.supported_models:
