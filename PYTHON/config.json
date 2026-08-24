@@ -1,6 +1,5 @@
 {
   "baseURL": "https://polza.ai/api/v1",
   "api_key": "xxxxxxxxxxxxxx",
-  "model": "google/gemma-4-31b-it",
-  "image": false
+  "model": "deepseek/deepseek-v4-flash-vision-exp"
 }
