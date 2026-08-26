@@ -138,12 +138,46 @@ class Car:
         self.length = length
         self.gasoline_standart = gasoline_standart
 
+    def __bool__(self):
+        """
+        Этот метод определяет то, как объект преобразуется в булево значение, когда мы используем функцию bool или помещаем объект в ветвление. Этот метод должен возвращать булево выражение. В нашем случае это может быть проверка на больше-меньше стандарта топлива, которое у конкретного экземпляра, и тем, что у нас записано как минимально допустимый стандарт топлива.
+        """
+        return self.gasoline_standart >= self.threshold_gasoline
+
+    def __str__(self):
+        """
+        Этот метод отдаёт строку, которая возвращается, когда мы печатаем экземпляр этого класса.
+        Фактически этот метод вызывает функцию `print` автоматически, когда мы помещаем в `print` экземпляр нашего класса.
+        """
+        return f"Автомобиль {self.model} - {self.year} года\nВес: {self.weidth}\nДлина: {self.length}мм\nСтандарт топлива: {self.gasoline_standart}\n============\n"
+
+    def __len__(self):
+        """
+        Метод `len` вызывается автоматически в Python, когда экземпляр нашего класса помещается во встроенную функцию `len()`. Это может быть удобно, когда вы работаете с какими-то объектами, где важна эта характеристика.
+
+        А также это позволяет использовать сортировку в формате: список экземпляров класса сортируется через `.sort(key=len)`.
+        """
+        return self.length
+
+
 
 car_1 = Car("Лада Малина", 1995, 2000, 3000, 2)
 car_2 = Car("Лада Клубника", 2026, 1300, 2600, 9)
 car_3 = Car("Мерседес S600", 2021, 2200, 2800, 5)
 
-print(bool(car_1))
+if car_1:
+    print(car_1, "Автомобиль годен для эксплуатации")
+else:
+    print(car_1, "Срочно уничтожить этот автомобиль")
+
+
+print(len(car_1))
+
+cars = [car_1, car_2, car_3]
+cars.sort(key=len)
+print(cars)
+[print(car) for car in cars]
+
 # print(car_1 + car_2) # TypeError: unsupported operand type(s) for +: 'Car' and 'Car'
 # car_1() # TypeError: 'Car' object is not callable
 # print(len(car_1)) # TypeError: object of type 'Car' has no len()
