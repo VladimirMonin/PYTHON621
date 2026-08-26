@@ -159,11 +159,26 @@ class Car:
         """
         return self.length
 
+    def __call__(self, name: str):
+        print(f"{name} нажал(а) педаль и сделал ВРУМ!!!! в {self.model}")
+
+    def wroom(self, name: str):
+        print(f"{name} нажал(а) педаль и сделал ВРУМ!!!! в {self.model}")
+
 
 
 car_1 = Car("Лада Малина", 1995, 2000, 3000, 2)
 car_2 = Car("Лада Клубника", 2026, 1300, 2600, 9)
 car_3 = Car("Мерседес S600", 2021, 2200, 2800, 5)
+
+car_3("Елена")
+car_1("Евгений")
+car_2("Роман")
+
+car_2("Денис")
+
+car_1.wroom(name="Николай")
+car_1.wroom("Анна")
 
 if car_1:
     print(car_1, "Автомобиль годен для эксплуатации")
