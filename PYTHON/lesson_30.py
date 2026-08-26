@@ -31,7 +31,9 @@
 # 4. Нюанс иммутабельных типов (int, str, tuple): изменить их на месте
 #    нельзя, поэтому даже __iadd__ там вынужден вернуть новый объект.
 """
+from functools import total_ordering
 
+@total_ordering
 class Playlist:
     def __init__(self, name: str):
         self.songs: list = []
@@ -62,6 +64,14 @@ class Playlist:
         self.songs += other.songs
         return self
 
+    def __eq__(self, other: Playlist) -> bool:
+        return len(self.songs) == len(other.songs)
+
+    def __lt__(self, other: Playlist) -> bool:
+        return len(self.songs) < len(other.songs)
+
+
+
 
 
 playlist_1 = Playlist("Для прогулок")
@@ -81,3 +91,5 @@ print(playlist_3)
 playlist_1 += playlist_2
 print(id(playlist_1))
 print(playlist_1)
+
+print(playlist_1 > playlist_2)
