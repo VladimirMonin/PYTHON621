@@ -44,6 +44,20 @@ class TxtDocument(Document):
 
 class WordDocument(Document): ...
 
-md_1 = MarkdownDocument("!", "utf-8")
-md_1.show_path()
-print(md_1.special)
+txt_doc = TxtDocument("example.txt")
+word_doc = WordDocument("example.word")
+md_doc = MarkdownDocument("example.md", "utf-8")
+
+docs_list: list[Document] = [txt_doc, word_doc, md_doc]
+
+for doc in docs_list:
+    doc.open()
+
+class DocManager:
+    def __init__(self, *docs: Document):
+        self.docs = list(docs)
+
+
+doc_manager = DocManager(*docs_list)
+
+
