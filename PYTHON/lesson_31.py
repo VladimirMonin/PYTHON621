@@ -9,7 +9,7 @@ class Document:
         self.file_path = file_path
 
     def open(self):
-        print(f"Открыт {self.__class__.__name__} документ")
+        print(f"Метод open из Document")
 
     def show_path(self):
         print(f"Путь к файлу: {self.file_path}")
@@ -18,15 +18,13 @@ class Document:
 class MarkdownDocument(Document):
     def open(self):
         super().open()
-        print(f"MarkdownDocument имеет свой метод open!")
-        # Document(self.file_path).open()
-        
-        
+        # Document.open(self) ВОТ ЭТО ЗАМЕНА СУПЕР
+        print(f"MarkdownDocument имеет расширенный метод open!")
 
 
-
-
-class TxtDocument(Document): ...
+class TxtDocument(Document):
+    def open(self):
+        print(f"TxtDocument имеет свой метод open!")
 
 
 class WordDocument(Document): ...
@@ -40,3 +38,6 @@ documents = [md_1, txt_1, wd_1]
 
 for doc in documents:
     doc.open()
+
+
+print(MarkdownDocument.mro())
