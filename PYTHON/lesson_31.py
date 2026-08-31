@@ -44,20 +44,30 @@ class TxtDocument(Document):
 
 class WordDocument(Document): ...
 
+
+"""
+В Python слово type обозначает два тесно связанных, но разных механизма, и различие удобнее всего показать через пару instance и subclass.
+
+Когда речь идёт об instance (экземпляре), type — это встроенная функция: type(obj) возвращает класс, которым объект был создан. Каждый объект в Python хранит ссылку на свой класс, и type просто её читает, поэтому вызов выполняется мгновенно. Функция отвечает на вопрос «чем является этот объект» и не учитывает наследование: type(instance) вернёт именно тот класс, которым объект был создан, а не его базовые классы. Для проверки принадлежности с учётом всей иерархии наследования используют isinstance.
+
+Когда речь идёт о subclass (подклассе), type — это уже не функция-инспектор, а класс-метакласс, который по умолчанию используется для создания новых классов. Каждое объявление вида class Foo(Bar) под капотом вызывает type с тремя аргументами: type(name, bases, namespace), и результатом вызова становится новый класс. Тот же механизм работает и при ручном динамическом создании классов во время выполнения программы.
+
+Таким образом, type в применении к instance даёт возможность узнать фактический класс объекта и работать с ним, а type в применении к subclass даёт контроль над самим процессом порождения классов: перехватывать создание класса, изменять его атрибуты, автоматически регистрировать подклассы и накладывать на них ограничения.
+"""
+
+
 txt_doc = TxtDocument("example.txt")
 word_doc = WordDocument("example.word")
 md_doc = MarkdownDocument("example.md", "utf-8")
 
-docs_list: list[Document] = [txt_doc, word_doc, md_doc]
+doc = Document("dfsfsf")
 
-for doc in docs_list:
-    doc.open()
+print(type(txt_doc))
 
-class DocManager:
-    def __init__(self, *docs: Document):
-        self.docs = list(docs)
-
-
-doc_manager = DocManager(*docs_list)
+print(isinstance(md_doc, Document))
+print(isinstance(md_doc, MarkdownDocument))
+print(isinstance(doc, MarkdownDocument))
 
 
+print(issubclass(MarkdownDocument, Document))
+print(issubclass(Document, MarkdownDocument))
