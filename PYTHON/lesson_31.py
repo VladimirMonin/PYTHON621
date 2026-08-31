@@ -3,28 +3,25 @@ Lesson 31: Полиморфизм  и наследование
 - Полиморфизм как взаимозаменяемость экземпляров разных классов
 """
 
-class MarkdownDocument:
+
+class Document:
     def __init__(self, file_path: str):
         self.file_path = file_path
 
     def open(self):
         print(f"Открыт {self.__class__.__name__} документ")
 
-
-class TxtDocument:
-    def __init__(self, file_path: str):
-        self.file_path = file_path
-
-    def open(self):
-        print(f"Открыт {self.__class__.__name__} документ")
+    def show_path(self):
+        print(f"Путь к файлу: {self.file_path}")
 
 
-class WordDocument:
-    def __init__(self, file_path: str):
-        self.file_path = file_path
+class MarkdownDocument(Document): ...
 
-    def open(self):
-        print(f"Открыт {self.__class__.__name__} документ")
+
+class TxtDocument(Document): ...
+
+
+class WordDocument(Document): ...
 
 
 md_1 = MarkdownDocument("example.md")
