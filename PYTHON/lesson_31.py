@@ -15,7 +15,15 @@ class Document:
         print(f"Путь к файлу: {self.file_path}")
 
 
-class MarkdownDocument(Document): ...
+class MarkdownDocument(Document):
+    def open(self):
+        super().open()
+        print(f"MarkdownDocument имеет свой метод open!")
+        # Document(self.file_path).open()
+        
+        
+
+
 
 
 class TxtDocument(Document): ...
