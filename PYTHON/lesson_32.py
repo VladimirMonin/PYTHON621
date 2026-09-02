@@ -5,9 +5,12 @@ Lesson 32: Абстрактные классы
 - Кооперативный `super()` и mixin-классы
 """
 
+from os import name
+
 
 class Matryoska:
     def __init__(self, name):
+        super().__init__()
         self.name = name
 
     def __str__(self):
@@ -15,42 +18,56 @@ class Matryoska:
 
 
 class MaterialMetalMixin:
-    def __init__(self):
+    def __init__(self, name):
+        super().__init__(name)
         self.material = "металл"
 
     def __str__(self):
-        return f"Матрешка {self.name} из {self.material}"
+        return f"{super().__str__()} из материала {self.material}"
 
 
-class TolkingMixin:
-    def __init__(self):
+class TalkingMixin:
+    def __init__(self, name):
+        super().__init__(name)
         self.feat = "говорит"
         self.phrase = "Сделаем Америку Грейт Агейн!"
 
     def change_words(self, new_phrase):
         self.phrase = new_phrase
 
-    def voice_bottom(self):
+    def speak(self):
         return f"{self.name} {self.feat}: {self.phrase}"
 
     def __str__(self):
-        return f"Матрешка {self.name} {self.feat}: {self.phrase}"
+        return f"{super().__str__()} Говорящая! {self.feat}: {self.phrase}"
 
 
-class MetallicMatryoska(Matryoska, MaterialMetalMixin, TolkingMixin):
+class RhinestoneMixin:
     def __init__(self, name):
-        Matryoska.__init__(self, name)
-        MaterialMetalMixin.__init__(self)
-        TolkingMixin.__init__(self)
+        super().__init__(name)
+        self.decoration = "стразы"
 
     def __str__(self):
-        return f"Матрешка {self.name} из {self.material} {self.feat}: {self.phrase}"
+        return f"{super().__str__()} украшена {self.decoration}"
 
 
-tramp_matryoska = MetallicMatryoska("Трамп")
+class MatryoskaSpecialEdition(
+    TalkingMixin, RhinestoneMixin, MaterialMetalMixin, Matryoska
+): ...
+
+
+tramp_matryoska = MatryoskaSpecialEdition("Трамп")
 tramp_matryoska.change_words("Make America Great Again!")
-print(tramp_matryoska.voice_bottom())
+print(tramp_matryoska.speak())
 
-medved_matryoska = MetallicMatryoska("Медведев")
+print(tramp_matryoska)
+
+
+medved_matryoska = MatryoskaSpecialEdition("Медведев")
 medved_matryoska.change_words("Денег нет, но вы держитесь!")
-print(medved_matryoska.voice_bottom())
+print(medved_matryoska.speak())
+
+print(medved_matryoska)
+
+for cls in MatryoskaSpecialEdition.__mro__:
+    print(cls)
