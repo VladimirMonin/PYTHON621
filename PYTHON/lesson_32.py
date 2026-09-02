@@ -23,6 +23,11 @@ class AbstractImageFile(ABC):
     def __str__(self):
         return f"Файл {self.__class__.__name__} с путем {self.file_path}"
 
+    def __eq__(self, other):
+        if isinstance(other, AbstractImageFile):
+            return self.file_path == other.file_path
+        return False
+
 
 class JpegImageFile(AbstractImageFile):
     def read(self):
@@ -39,5 +44,24 @@ class PngImageFile(AbstractImageFile):
     def crop(self):
         print("Обрезка PNG файла")
 
+
+a_str = "один"
+b_str = "один"
+c_str = "два"
+
+print(a_str == b_str)  # True
+print(a_str is b_str)  # True
+print(a_str == c_str)  # False
+print(a_str is c_str)  # False
+
 jpeg_file = JpegImageFile("image.jpeg")
+jpeg_file_2 = JpegImageFile("image.jpeg")
 png_file = PngImageFile("image.png")
+
+print(
+    jpeg_file == jpeg_file_2
+)  # False НО ЕСЛИ БУДЕТ eq который сверяет по атрибутам, то будет True
+print(jpeg_file is jpeg_file_2)  # False
+
+print(jpeg_file == jpeg_file)  # True
+print(jpeg_file is jpeg_file)  # True
