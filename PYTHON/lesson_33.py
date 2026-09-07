@@ -60,3 +60,27 @@ employee_4 = Employee.from_dict(employee_dict_4)
 dict_4 = employee_4.to_dict()
 
 print(dict_4)
+
+# Список персонажей
+list_of_employees = [employee_1, employee_2, employee_3, employee_4]
+
+# Сбрасываю их в JSON файл
+import json
+FILE = "employees.json"
+
+dicts_list_of_employees = [employee.to_dict() for employee in list_of_employees]
+
+
+with open(FILE, "w", encoding="utf-8") as file:
+    json.dump(dicts_list_of_employees, file, indent=4, ensure_ascii=False)
+
+
+# А теперь обратно!
+
+with open(FILE, "r", encoding="utf-8") as file:
+    data = json.load(file)
+
+list_of_employees_from_json = [Employee.from_dict(employee_dict) for employee_dict in data]
+
+print(list_of_employees_from_json)
+[print(employee) for employee in list_of_employees_from_json]
