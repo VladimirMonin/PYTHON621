@@ -5,7 +5,7 @@ Lesson 33: Python Dataclasses
 from dataclasses import dataclass, field, asdict
 
 
-@dataclass
+@dataclass(frozen=True)
 class Employee:
     name: str
     age: int
@@ -65,3 +65,5 @@ em_3_dict["is_married"] = False
 
 # print(em_3.is_married)
 print(em_3_dict)
+
+# em_3.age = 13 dataclasses.FrozenInstanceError
