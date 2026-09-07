@@ -13,6 +13,10 @@ class Employee:
     position: str = "Безработный"
     salary: float = 0.0
 
+    # post иницилизатор - фича датаклассов
+    def __post_init__(self):
+        print(f"Это второй инициализатор! Мы создали: {self.name}")
+
     def __str__(self):
         return f"Сотрудник: {self.name}, Возраст: {self.age}, Должность: {self.position}, Зарплата: {self.salary}\nSkills: {self.skills}"
 
