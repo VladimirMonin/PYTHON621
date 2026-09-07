@@ -75,3 +75,59 @@ print(employee_5)
 employee_5.skills.append("Езда на велосипеде")
 print(employee_5)
 
+# А теперь пример с обычным классом и общим списком на всех вместе)
+
+
+class BaseEmployee:
+    def __init__(
+        self,
+        name: str,
+        age: int,
+        position: str = "Безработный",
+        salary: float = 0.0,
+        skills: list = [],
+    ):
+        self.name = name
+        self.age = age
+        self.position = position
+        self.salary = 0.0
+        self.skills = skills
+
+
+be_1 = BaseEmployee(
+    "Шарик",
+    2,
+    "Пес",
+    1000.0,
+    ["жаловаться", "фотографировать", "покупать кеды на Озон"],
+)
+be_2 = BaseEmployee(
+    "Матроскин", 3, "Кот", 5000.0, ["манипулировать Шариком", "пить молоко"]
+)
+
+print(be_2.skills)
+print(be_1.skills)
+
+be_3 = BaseEmployee("Печкин", 50)
+be_4 = BaseEmployee("Заяц", 2)
+
+be_3.skills.append("Потирать усы")
+
+print(be_4.skills)
+
+
+# Правильно это можно сделать так!
+# class BaseEmployee:
+#     def __init__(
+#         self,
+#         name: str,
+#         age: int,
+#         position: str = "Безработный",
+#         salary: float = 0.0,
+#         skills: list | None = None,
+#     ):
+#         self.name = name
+#         self.age = age
+#         self.position = position
+#         self.salary = salary
+#         self.skills = [] if skills is None else skills
