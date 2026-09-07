@@ -2,7 +2,7 @@
 Lesson 33: Python Dataclasses
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 
 
 @dataclass
@@ -21,7 +21,7 @@ class Employee:
         return cls(**data)
 
     def to_dict(self):
-        return self.__dict__
+        return asdict(self)
 
 
 employee_dict_1 = {
@@ -62,4 +62,6 @@ em_3 = Employee.from_dict(employee_dict_3)
 em_3_dict = em_3.to_dict()
 em_3_dict["is_married"] = False
 
-print(em_3.is_married)
+
+# print(em_3.is_married)
+print(em_3_dict)
