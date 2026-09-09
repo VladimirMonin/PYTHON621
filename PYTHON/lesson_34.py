@@ -13,11 +13,11 @@ class AgeEmployeeException(Exception):
 
 
 class Employee(BaseModel):
-    name: str
+    name: str = Field(min_length=3, max_length=50)
     age: int = Field(ge=0, le=120)
-    skills: list[str]
-    position: str
-    salary: float
+    skills: list[str] = Field(min_length=3, max_length=20)
+    position: str = Field(min_length=3, max_length=20)
+    salary: float = Field(ge=0)
 
 employee_dict_1 = {
     "name": "Шарик",
@@ -29,10 +29,10 @@ employee_dict_1 = {
 
 employee_dict_2 = {
     "name": "Матроскин",
-    "age": 500,
+    "age": 119,
     "position": "Кот",
     "salary": 5000.0,
-    "skills": ["манипулировать Шариком", "пить молоко"],
+    "skills": ["манипулировать Шариком", "пить молоко", "Безудержный парашютный спорт до потери всех своих девяти жизней"],
 }
 
 
