@@ -3,10 +3,12 @@ Lesson 34: Python Dataclasses, Pydantic, Pydanticsettings
 """
 
 from dataclasses import dataclass, field, asdict
+
 # uv add pydantic
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, field_validator
 
 # Создадим свой AgeEmployeeException
+
 
 class AgeEmployeeException(Exception):
     pass
@@ -19,8 +21,14 @@ class Employee(BaseModel):
     position: str = Field(min_length=3, max_length=20)
     salary: float = Field(ge=0)
 
+    @field_validator("name", mode="before")
+    @classmethod
+    def validate_name(cls, value: str) -> str:
+        return value.strip()
+
+
 employee_dict_1 = {
-    "name": "Шарик",
+    "name": "                              Шарик                                       ",
     "age": 2,
     "position": "Пес",
     "salary": 1000.0,
@@ -32,7 +40,11 @@ employee_dict_2 = {
     "age": 119,
     "position": "Кот",
     "salary": 5000.0,
-    "skills": ["манипулировать Шариком", "пить молоко", "Безудержный парашютный спорт до потери всех своих девяти жизней"],
+    "skills": [
+        "манипулировать Шариком",
+        "пить молоко",
+        "Безудержный парашютный спорт до потери всех своих девяти жизней",
+    ],
 }
 
 
@@ -52,11 +64,6 @@ employee_dict_4 = {
     "skills": ["позировать на фото", "убегать"],
 }
 
-# Пытаюсь создать Матроскина которому 200 лет
 
-try:
-    em_2 = Employee(**employee_dict_2)
-except ValidationError as ex:
-    for error in ex.errors():
-        print(error)
-
+em_1 = Employee(**employee_dict_1)
+print(em_1.name)
