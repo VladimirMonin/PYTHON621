@@ -3,7 +3,8 @@ Lesson 34: Python Dataclasses, Pydantic, Pydanticsettings
 """
 
 from dataclasses import dataclass, field, asdict
-
+# uv add pydantic
+from pydantic import BaseModel, Field
 
 # Создадим свой AgeEmployeeException
 
@@ -11,39 +12,12 @@ class AgeEmployeeException(Exception):
     pass
 
 
-@dataclass
-class Employee:
+class Employee(BaseModel):
     name: str
     age: int
-    skills: list = field(default_factory=list)
-    position: str = "Безработный"
-    salary: float = 0.0
-
-    # post иницилизатор - фича датаклассов
-    def __post_init__(self):
-        print(f"Мы запустили постинициализатор!")
-        self.age = self.__age_validator(self.age)
-
-
-    def __str__(self):
-        return f"Сотрудник: {self.name}, Возраст: {self.age}, Должность: {self.position}, Зарплата: {self.salary}\nSkills: {self.skills}"
-
-    def __age_validator(self, age: int) -> int:
-        if not isinstance(age, int):
-           raise AgeEmployeeException("Возраст должен быть целым числом")
-        if 0 < age < 120:
-            return age
-        raise AgeEmployeeException("Возраст должен быть от 1 до 119")
-
-
-
-    @classmethod
-    def from_dict(cls, data: dict):
-        return cls(**data)
-
-    def to_dict(self):
-        return asdict(self)
-
+    skills: list[str]
+    position: str
+    salary: float
 
 employee_dict_1 = {
     "name": "Шарик",
@@ -55,10 +29,10 @@ employee_dict_1 = {
 
 employee_dict_2 = {
     "name": "Матроскин",
-    "age": 200,
+    "age": "Неизвестно",
     "position": "Кот",
     "salary": 5000.0,
-    "skills": ["манипулировать Шариком", "пить молоко"],
+    "skills": ["манипулировать Шариком", "пить молоко", 67],
 }
 
 
@@ -79,8 +53,5 @@ employee_dict_4 = {
 }
 
 # Пытаюсь создать Матроскина которому 200 лет
-try:
-    em_2 = Employee(**employee_dict_2)
-except AgeEmployeeException as ex:
-    print(ex)
-    print("Кажется что-то с возрастом!")
+
+em_2 = Employee(**employee_dict_2)
