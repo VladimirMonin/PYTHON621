@@ -1,12 +1,42 @@
 """
 Lesson 34: Python Dataclasses, Pydantic, Pydanticsettings
+
+gt - больше чем
+lt - меньше чем
+ge - больше или равно
+le - меньше или равно
+min_lenth - минимальная длина
+max_lenth - максимальная длина
+pattern= - соответствме регулярке
+EmailStr - проверка на emeil
+HttpUrl - ссылка в интернете
+AnyUrl - более мягкий вариант
+IPvAnyAddress
+PaymentCardNumber
+date
+time
+datetime
+
+
+uv add pydantic-extra-types
+from pydantic_extra_types.phone_numbers import PhoneNumber
+PhoneNumber("89001234567")
+
+uv add "pydantic[email,timezone]" "pydantic-extra-types[all]" pydantic-settings
 """
 
 from dataclasses import dataclass, field, asdict
 
 # uv add pydantic
-from pydantic import BaseModel, Field, ValidationError, field_validator
-
+from pydantic import (
+    BaseModel,
+    Field,
+    ValidationError,
+    field_validator,
+    EmailStr,
+    HttpUrl,
+)
+from pydantic_extra_types.phone_numbers import PhoneNumber
 # Создадим свой AgeEmployeeException
 
 
@@ -15,24 +45,37 @@ class AgeEmployeeException(Exception):
 
 
 class Employee(BaseModel):
-    name: str = Field(min_length=3, max_length=50)
+    name: str
     age: int = Field(ge=0, le=120)
     skills: list[str] = Field(min_length=3, max_length=20)
     position: str = Field(min_length=3, max_length=20)
     salary: float = Field(ge=0)
 
+    # Новые поля
+    email: EmailStr
+    phone: PhoneNumber
+    portfolio: HttpUrl | None = None
+
     @field_validator("name", mode="before")
     @classmethod
     def validate_name(cls, value: str) -> str:
-        return value.strip()
+        value = value.strip()
+
+        if not 3 < len(value) < 20:
+            raise ValueError("Имя должно быть от 3 до 20 символов")
+
+        return value
 
 
 employee_dict_1 = {
-    "name": "                              Шарик                                       ",
+    "name": "Шарик",
     "age": 2,
     "position": "Пес",
     "salary": 1000.0,
     "skills": ["жаловаться", "фотографировать", "покупать кеды на Озон"],
+    "email": "sharik@example.com",
+    "phone": "+77011234567",
+    "portfolio": "https://sharik.example.com",
 }
 
 employee_dict_2 = {
@@ -43,10 +86,12 @@ employee_dict_2 = {
     "skills": [
         "манипулировать Шариком",
         "пить молоко",
-        "Безудержный парашютный спорт до потери всех своих девяти жизней",
+        "парашютный спорт",
     ],
+    "email": "matroskin@@prostokvashino",
+    "phone": "кот позвонит сам",
+    "portfolio": "трактор",
 }
-
 
 employee_dict_3 = {
     "name": "Дядя Фёдор",
@@ -65,5 +110,10 @@ employee_dict_4 = {
 }
 
 
+# Создаем Шарика
 em_1 = Employee(**employee_dict_1)
-print(em_1.name)
+print(em_1)
+
+# Создаем Матроскина
+em_2 = Employee(**employee_dict_2)
+print(em_2)
