@@ -114,6 +114,20 @@ employee_dict_4 = {
 em_1 = Employee(**employee_dict_1)
 print(em_1)
 
-# Создаем Матроскина
-em_2 = Employee(**employee_dict_2)
-print(em_2)
+# Dump -> JSON + Dict
+em_1_json = em_1.model_dump_json(indent=4)
+print(type(em_1_json))
+print(em_1_json)
+
+em_1_to_dict = em_1.model_dump()
+print(type(em_1_to_dict))
+print(em_1_to_dict)
+
+# Десериализация DICT -> Employee
+# Вариант 1. Классика
+em_1 = Employee(**em_1_to_dict)
+# Вариант 2. Более наглядный
+em_1 = Employee.model_validate(em_1_to_dict)
+
+# Десериализация JSON -> Employee
+em_1 = Employee.model_validate_json(em_1_json)
