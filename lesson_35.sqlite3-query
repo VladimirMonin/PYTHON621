@@ -1,0 +1,54 @@
+-- database: ./titanic.db
+
+SELECT *
+FROM passengers;
+
+SELECT name, sex, age
+FROM passengers;
+
+SELECT name, sex, age, survived, pclass
+FROM passengers
+WHERE age < 5;
+
+SELECT name, sex, age, survived, pclass
+FROM passengers
+WHERE age < 5 AND pclass = 1;
+
+SELECT name, sex, age, survived, pclass
+FROM passengers
+WHERE age < 5
+ORDER BY pclass;
+
+SELECT name, sex, age, survived, pclass
+FROM passengers
+WHERE age < 16
+ORDER BY pclass, Survived DESC;
+
+-- AND, OR, NOT, IN
+SELECT name AS "Имя", sex AS "Пол", age AS "Возраст", survived AS "Выжил", pclass AS "Класс", Embarked AS "Порт посадки"
+FROM passengers
+WHERE Pclass = 1 AND Embarked IS NULL;
+
+
+SELECT name AS "Имя", sex AS "Пол", age AS "Возраст", survived AS "Выжил", pclass AS "Класс", Embarked AS "Порт посадки"
+FROM passengers
+WHERE Embarked = "Q";
+
+
+SELECT name AS "Имя", sex AS "Пол", age AS "Возраст", survived AS "Выжил", pclass AS "Класс", Embarked AS "Порт посадки", Fare AS "Цена билета"
+FROM passengers
+WHERE Embarked = "S"
+ORDER BY Pclass, Fare DESC;
+
+
+SELECT name AS "Имя", sex AS "Пол", age AS "Возраст", survived AS "Выжил", pclass AS "Класс", Embarked AS "Порт посадки", Fare AS "Цена билета"
+FROM passengers
+WHERE Embarked = "S"
+AND fare BETWEEN 0 AND 10
+AND pclass = 1
+ORDER BY Pclass, Fare DESC;
+
+
+SELECT name AS "Имя", sex AS "Пол", age AS "Возраст", survived AS "Выжил", pclass AS "Класс", Embarked AS "Порт посадки", Fare AS "Цена билета"
+FROM passengers
+WHERE Embarked IN ("S", "Q");
