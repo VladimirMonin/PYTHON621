@@ -1,0 +1,89 @@
+-- database: ./marvel_not_normal.db
+
+SELECT * FROM MarvelCharacters;
+
+SELECT name, eye, hair, sex, appearances, year
+FROM MarvelCharacters;
+
+-- SELECT - отвечает за то, какие столбцы вы увидите
+-- FROM - из какой таблицы
+-- WHERE - условия фильтрации
+-- AND, OR, NOT, IN, BETWEEN LIKE = < > != оператор
+-- ORDER - порядок сортировки - можно указать ресколько признаков, есть DESC - по убыванию (по умолчанию стоит ASK)
+
+
+-- Персонажи с 39 по 45 включительно
+SELECT name, appearances, year
+FROM MarvelCharacters
+WHERE year BETWEEN 1930 AND 1945
+AND appearances > 10
+ORDER BY year, appearances DESC;
+
+--PRACTICE - попробуйте убрать из выборки персонажей с количеством появлений менее 10
+
+-- LIKE - оператор для поиска ПОХОЖЕГО
+-- Поддерживает маски
+
+SELECT name, appearances, year
+FROM MarvelCharacters
+WHERE name LIKE "% man %"
+OR name LIKE "%-man%";
+
+
+-- ПОПРОБУЙТЕ НАБРАТЬ от 5 запросов
+-- %Adolf%
+-- Adolf%
+-- %Adolf
+-- %Putin%
+-- %Spider%
+-- %Spider%man%
+-- Spider%
+-- %man%
+
+-- Список уникальных значений
+SELECT DISTINCT SEX
+FROM MarvelCharacters;
+
+SELECT name, align, appearances, year, sex
+FROM MarvelCharacters
+WHERE sex = "Female Characters"
+AND align LIKE "%bad%"
+ORDER BY appearances DESC
+LIMIT 5;
+
+
+SELECT name, align, appearances, year, sex
+FROM MarvelCharacters
+WHERE sex != "Female Characters"
+AND align LIKE "%bad%"
+ORDER BY appearances DESC
+LIMIT 5;
+
+-- Все персоонажи за вычитом традиционного пола и неуказанного пола
+SELECT name, align, appearances, year, sex
+FROM MarvelCharacters
+WHERE sex NOT IN ('Male Characters', 'Female Characters') 
+AND SEX IS NOT NULL
+ORDER BY appearances DESC;
+
+
+SELECT DISTINCT EYE
+FROM MarvelCharacters;
+
+SELECT EYE
+FROM MarvelCharacters
+GROUP BY EYE;
+
+SELECT EYE AS "Цвет глаз", COUNT(*) AS "Героев"
+FROM MarvelCharacters
+GROUP BY EYE
+ORDER BY "Героев" DESC;
+
+
+SELECT EYE AS "Цвет глаз", COUNT(*) AS "Героев"
+FROM MarvelCharacters
+WHERE EYE IS NOT Null
+GROUP BY EYE
+ORDER BY "Героев" DESC
+
+-- Фильтрация после группировки???? HAVING
