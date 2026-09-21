@@ -1,0 +1,46 @@
+-- database: ./marvel_not_normal.db
+
+SELECT * FROM MarvelCharacters;
+
+
+-- Это более правильно потому что мы выкидываем NULL до группировок
+SELECT EYE, count(*) AS eye_count
+FROM MarvelCharacters
+WHERE EYE IS NOT NULL
+GROUP BY EYE
+HAVING eye_count > 9
+ORDER BY eye_count DESC;
+
+-- Это менее правильно потому что мы делаем группу Null считаем ее а потом выкидываем
+-- SELECT EYE, count(*) AS eye_count
+-- FROM MarvelCharacters
+-- GROUP BY EYE
+-- HAVING eye_count > 9 AND eye IS NOT NULL
+-- ORDER BY eye_count DESC;
+
+SELECT HAIR, EYE, count(*) AS total_count
+FROM MarvelCharacters
+WHERE EYE IS NOT NULL AND HAIR IS NOT NULL
+GROUP BY EYE, HAIR
+-- ORDER BY total_count DESC
+ORDER BY eye, total_count DESC;
+
+----------- SUM
+SELECT HAIR, SUM(APPEARANCES) as sum_app
+FROM MarvelCharacters
+WHERE HAIR IS NOT NULL
+GROUP BY HAIR
+ORDER BY sum_app DESC;
+
+SELECT HAIR, SUM(APPEARANCES) as sum_app, COUNT(*) as total_chars
+FROM MarvelCharacters
+WHERE HAIR IS NOT NULL
+GROUP BY HAIR
+ORDER BY sum_app DESC;
+
+
+SELECT HAIR, SUM(APPEARANCES) as sum_app, COUNT(*) as total_chars, MAX(APPEARANCES) as max_app
+FROM MarvelCharacters
+WHERE HAIR IS NOT NULL AND APPEARANCES IS NOT NULL
+GROUP BY HAIR
+ORDER BY sum_app DESC;

@@ -1,0 +1,75 @@
+-- database: ./titanic.db
+
+SELECT * FROM passengers;
+
+SELECT sex, survived, count(*) AS "сумма", round(avg(age), 1) AS "ср. возраст"
+FROM passengers
+WHERE sex IS NOT NULL
+AND survived IS NOT NULL
+GROUP BY sex, survived
+ORDER BY sex;
+
+SELECT Pclass, Survived, count(*) AS "всего"
+FROM passengers
+WHERE Pclass IS NOT NULL
+AND survived IS NOT NULL
+GROUP BY Pclass, Survived;
+
+
+SELECT Pclass, Survived, sex, count(*) AS "всего"
+FROM passengers
+WHERE Pclass IS NOT NULL
+AND survived IS NOT NULL
+GROUP BY Pclass, Survived, Sex
+ORDER BY survived, "всего" DESC;
+
+
+SELECT 
+    Pclass, 
+    Survived, 
+    sex, 
+    COUNT(*) AS "всего",
+    -- Считаем долю в процентах:
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2) AS "доля_%"
+FROM passengers
+WHERE Pclass IS NOT NULL 
+  AND survived IS NOT NULL
+GROUP BY Pclass, Survived, Sex
+ORDER BY survived, "всего" DESC;
+
+SELECT Pclass, count(*) as "Человек",
+ROUND(AVG(Fare), 2) AS "Средний билет",
+ROUND(AVG(Age), 1) AS "Средний возраст",
+MAX(Fare) AS "Самый дорогой билет",
+MIN(Fare) AS "Самый дешевый билет",
+SUM(Survived) AS "Выжило",
+(COUNT(*) - SUM(Survived)) AS "Не выжило"
+FROM passengers
+GROUP BY Pclass;
+
+
+SELECT cabin, count(*) AS "Человек", group_concat(name, " || "), group_concat(Survived, " || ") AS "Выжили"
+FROM passengers
+WHERE cabin IS NOT NULL
+GROUP BY cabin
+HAVING "Человек" > 1
+ORDER BY "Человек" DESC;
+
+
+SELECT Embarked AS port, count(*) as "всего", ROUND(AVG(Fare), 2) as "avg_fare"
+FROM passengers
+WHERE Embarked IS NOT NULL
+GROUP BY Embarked
+ORDER BY "всего" DESC;
+
+
+SELECT 
+    Embarked AS port, 
+    Pclass,
+    COUNT(*) AS "всего", 
+    ROUND(AVG(Fare), 2) AS "avg_fare",
+    MAX(Fare) AS "самый дорогой билет"
+FROM passengers
+WHERE Embarked IS NOT NULL AND Fare IS NOT NULL
+GROUP BY Embarked, Pclass
+ORDER BY port, Pclass;
