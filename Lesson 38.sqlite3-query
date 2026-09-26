@@ -1,0 +1,54 @@
+-- database: c:\PY\ПРИМЕРЫ КОДА\PYTHON621\marvel_normal.db
+
+SELECT * FROM MarvelCharacters;
+
+SELECT MarvelCharacters.name, HairColor.color
+FROM MarvelCharacters
+JOIN HairColor ON MarvelCharacters.hair_id = HairColor.hair_id;
+
+
+SELECT MarvelCharacters.name, HairColor.color
+FROM HairColor
+JOIN MarvelCharacters ON MarvelCharacters.hair_id = HairColor.hair_id;
+
+
+SELECT MarvelCharacters.name, HairColor.color
+FROM MarvelCharacters
+LEFT JOIN HairColor ON MarvelCharacters.hair_id = HairColor.hair_id;
+
+
+SELECT mc.name, mc.APPEARANCES, hc.color, ec.color
+FROM MarvelCharacters as mc
+JOIN HairColor as hc on mc.hair_id = hc.hair_id
+JOIN EyeColor as ec on mc.eye_id = ec.eye_id
+ORDER BY APPEARANCES DESC;
+
+
+SELECT hc.color as hair_color, count(*) AS "Всего"
+FROM MarvelCharacters as mc
+LEFT JOIN HairColor as hc on mc.hair_id = hc.hair_id
+GROUP BY hair_color
+ORDER BY "Всего" DESC;
+
+
+SELECT hc.color as hair_color, ec.color as eyes_color, count(*) AS "Всего"
+FROM MarvelCharacters as mc
+LEFT JOIN HairColor as hc on mc.hair_id = hc.hair_id
+LEFT JOIN EyeColor as ec on mc.eye_id = ec.eye_id
+GROUP BY hair_color
+ORDER BY "Всего" DESC;
+
+-- Попробуйте вывести всех супергероев у которых количество появлений больше 10 appearances и которые появились впервые между 1938 и 1949 годом year
+
+SELECT mc.name, mc.APPEARANCES, mc.year
+FROM MarvelCharacters AS mc
+WHERE mc.APPEARANCES > 9 AND mc.year BETWEEN 1938 AND 1949;
+
+-- Попробуйте сделать для этого запроса группировку по характеру (плохой - хороший - нейтральный) чтобы посчитать count всего align_id Alignment
+
+SELECT al.name AS "Характер", mc.APPEARANCES, mc.year, count(*) AS "Всего персонажей"
+FROM MarvelCharacters AS mc
+LEFT JOIN Alignment AS al ON mc.align_id = al.align_id
+WHERE mc.APPEARANCES > 9 AND mc.year BETWEEN 1938 AND 1949
+GROUP BY mc.align_id
+ORDER BY "Всего персонажей" DESC
