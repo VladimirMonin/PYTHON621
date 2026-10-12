@@ -1,0 +1,95 @@
+-- database: ./blog.db
+
+SELECT name
+FROM sqlite_schema
+WHERE type = 'table';
+
+DROP TABLE IF EXISTS posts;
+
+DROP TABLE IF EXISTS categories;
+
+CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    category_id INTEGER REFERENCES categories(id) ON DELETE RESTRICT,
+    create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    likes INTEGER DEFAULT 0,
+    view_count INTEGER DEFAUL);
+
+
+CREATE TABLE IF NOT EXISTS hashtags (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL UNIQUE,
+    slug TEXT UNIQUE NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS posts_hashtags (
+    post_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    hashtag_id INTEGER REFERENCES hashtags(id) ON DELETE CASCADE,
+    PRIMARY KEY (post_id, hashtag_id)
+);
+
+INSERT INTO hashtags (title, slug)
+VALUES
+    ('Python', 'python'),
+    ('Искусственный интеллект', 'ai'),
+    ('Git', 'git'),
+    ('SQLite', 'sqlite'),
+    ('Новости', 'news');
+
+
+INSERT INTO posts_hashtags (
+    post_id, hashtag_id)
+VALUES
+(1, 3),
+(1,1),
+(2, 2),
+(2, 5);
+
+
+INSERT INTO categories (name, slug)
+VALUES 
+('Новости ИИ', 'ai-news'),
+('Новости Python', 'python-news'),
+('Разработка', 'development');
+
+
+INSERT INTO posts (title, content, slug, category_id)
+VALUES
+('3.15 уже в пути!', 'Скоро релиз Python 3.15!', 'python-3-15-soon', (
+    SELECT id FROM categories WHERE name = "Новости Python"
+)),
+('Илон Маск сменил пол!', 'Посмотрите что он творит. Фото!', 'ilon-mask-smenil-pol', 1
+);
+
+
+SELECT posts.title, posts.content, posts.slug, categories.name AS category_name
+FROM posts
+JOIN categories ON posts.category_id = categories.id;
+
+
+SELECT posts.title, posts.content, posts.slug, posts_hashtags.post_id, posts_hashtags.hashtag_id
+FROM posts
+JOIN posts_hashtags ON posts.id = posts_hashtags.post_id;
+
+
+SELECT posts.title, posts.content, posts.slug, posts_hashtags.post_id, posts_hashtags.hashtag_id, hashtags.title
+FROM posts
+JOIN posts_hashtags ON posts.id = posts_hashtags.post_id
+JOIN hashtags ON posts_hashtags.hashtag_id = hashtags.id;
+
+
+SELECT posts.title, posts.content, posts.slug, group_concat(hashtags.title, ', ') as tags
+FROM posts
+JOIN posts_hashtags ON posts.id = posts_hashtags.post_id
+JOIN hashtags ON posts_hashtags.hashtag_id = hashtags.id
+GROUP BY posts.id

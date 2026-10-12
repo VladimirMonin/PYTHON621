@@ -1,0 +1,259 @@
+-- database: ./marvel_normal.db
+
+SELECT * FROM HairColor;
+
+
+-- 1. Посмотреть четыре персонажа для ручной проверки: две пары одного года дебюта.
+-- Двое появились в 1963 году, двое — в 1981; их появления можно сложить вручную.
+-- Результат: 4 строки; id 373, 380, 379, 383 в порядке года и id.
+
+SELECT id, name, year, appearances
+FROM MarvelCharacters
+WHERE id IN (373, 380, 379, 383)
+ORDER BY Year, id;
+
+
+-- 2. Получить сводку по годам из этих четырёх строк через знакомый GROUP BY.
+-- Имена исчезают: одна строка результата теперь означает один год, а не персонажа.
+-- Результат: 2 строки; в каждом году 2 персонажа, средние появления 110 и 109.
+SELECT Year, COUNT(*) AS characters_in_year,
+ROUND(AVG(appearances), 2) AS year_avarage
+FROM MarvelCharacters
+WHERE id IN (373, 380, 379, 383)
+GROUP BY Year
+ORDER BY Year;
+
+
+-- 3. Сохранить всех четырёх персонажей и дописать каждому число сверстников из подборки.
+-- PARTITION BY Year означает: считать среди выбранных строк с таким же годом.
+-- OVER делает COUNT оконным: вместо двух строк сводки остаются четыре персонажа.
+-- Результат: 4 строки; characters_in_year = 2 у каждого.
+SELECT id, name, Year, 
+COUNT(*) OVER (PARTITION BY Year) AS characters_in_year
+FROM MarvelCharacters
+WHERE id IN (373, 380, 379, 383)
+ORDER BY Year, id;
+
+-- 4. Расширяем подборку до 24 персонажей, читаем ее как CTE, и по нему делаем PARTITION BY PARTITION BY eye_id посчитаем сколько персонажей в этой выбрке с этим конкретным цветом глаз без группировки и без потери исходных строк в т.ч. имени персонажей
+WITH mc AS (
+    SELECT id, name, year, appearances, eye_id
+    FROM MarvelCharacters
+    WHERE id BETWEEN 361 AND 384
+)
+SELECT *,
+COUNT(*) OVER (PARTITION BY eye_id) AS "других с этим цветом глаз"
+FROM mc;
+
+-- 5. Рядом с каждой записью хроники показать размер именно этой редакторской подборки.
+-- Пустое OVER () не разделяет выбранные строки на группы: все 24 участвуют в расчёте.
+-- ORDER BY Year, id в конце управляет показом хроники, а не составом окна.
+-- Результат: 24 строки; selection_size = 24 у каждого, не 16376.
+
+SELECT id, name, year, count(*) OVER () AS selection_size
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384
+ORDER BY Year, id;
+
+
+-- 6. Рядом с каждым годом дебюта показать средний год дебюта всей подборки.
+-- AVG работает по тем же 24 строкам; ROUND нужен только для удобного отображения.
+-- Результат: 24 строки; selection_average_year = 1977.75 у каждого.
+
+SELECT id, name, year, ROUND(AVG(Year) OVER (), 2) AS selection_agerage_year
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384 
+ORDER BY Year, id;
+
+
+-- 7. Показать, на сколько лет дебют персонажа отличается от среднего года подборки.
+-- Отрицательное число означает более ранний дебют, положительное — более поздний.
+-- Вычитаем оконное среднее из собственного Year; список персонажей сохраняется.
+-- Результат: 24 строки; у Dorma (id 367) -38.75, у David Alleyne (id 370) 25.25.
+SELECT id, name, year, ROUND(Year - AVG(Year) OVER (), 2) AS selection_agerage_year
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384 
+ORDER BY Year, id;
+
+-- 8. Показать только начало хроники, но сохранить размер исходной подборки возле имени.
+-- LIMIT 5 применяется после окна: посчитаны 24 персонажа, показаны только пять.
+-- Результат: 5 строк; selection_size = 24, id 367, 364, 373, 380, 361.
+SELECT id, name, year, COUNT(*) OVER () AS selection_size
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384 
+ORDER BY Year, id
+LIMIT 5;
+
+
+-- 9. Сначала сузить хронику до дебютов раньше 1970 года, а затем показать пять записей.
+-- WHERE меняет входные строки окна: теперь оно считает семь подходящих персонажей.
+-- По сравнению с №8 имена те же, но число рядом с ними изменилось: это другой расчёт.
+-- Результат: 5 строк; early_selection_size = 7 у каждого, а не 24 и не 5.
+SELECT id, name, year, COUNT(*) OVER () AS selection_size
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384 
+AND Year < 1970
+ORDER BY Year, id
+LIMIT 5;
+
+-- 10. Проверить вручную состав годовых групп всей подборки обычной сводкой.
+-- Эта сводка нужна для проверки следующего окна, но не сохраняет все имена.
+-- Результат: 18 строк; в 1963 и 1977 по 2 персонажа, в 1981 и 1988 по 3.
+SELECT Year, COUNT(*) AS characters_in_year
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384
+GROUP BY Year
+ORDER BY characters_in_year DESC;
+
+
+-- 11. Дописать каждому персонажу размер его годовой группы из сводки №10.
+-- Группируем для расчёта по Year, а не по стороне; в выдаче остаётся вся хроника.
+-- Результат: 24 строки; у персонажей 1981 и 1988 годов characters_in_year = 3.
+SELECT id, name, Year, COUNT(*) OVER (PARTITION BY Year) AS characters_in_year
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384
+ORDER BY characters_in_year DESC;
+
+
+-- 12. Рядом с появлениями персонажа показать среднее появлений его сверстников в подборке.
+-- Участники среднего — только выбранные персонажи с таким же Year, не вся сторона.
+SELECT id, name, Year, APPEARANCES,
+ROUND(AVG(APPEARANCES) OVER (PARTITION BY Year), 2) AS year_average
+FROM MarvelCharacters
+WHERE Year IS NOT NULL
+ORDER BY Year, APPEARANCES DESC;
+
+-- 13. Рядом с персонажем показать наибольшее число появлений в его годовой группе.
+-- MAX повторяет одно и то же значение у всех выбранных персонажей данного года.
+SELECT id, name, Year, APPEARANCES,
+MAX(APPEARANCES) OVER (PARTITION BY Year) AS year_maximum
+FROM MarvelCharacters
+WHERE Year IS NOT NULL
+ORDER BY Year, APPEARANCES DESC;
+
+
+-- 14. Показали наибольшее чилос появлений в его годовй группе а так же сколько персонажу нехватает до лидера его года
+SELECT id, name, Year, APPEARANCES,
+MAX(APPEARANCES) OVER (PARTITION BY Year) AS year_maximum,
+MAX(APPEARANCES) OVER (PARTITION BY Year) - APPEARANCES AS appearances_to_year_maximum
+FROM MarvelCharacters
+WHERE Year IS NOT NULL
+ORDER BY Year, APPEARANCES DESC;
+
+
+-- 14. Альтернатива с CTE
+WITH year_stats AS (
+    SELECT id, name, Year, APPEARANCES,
+           MAX(APPEARANCES) OVER (PARTITION BY Year) AS year_maximum
+    FROM MarvelCharacters
+    WHERE Year IS NOT NULL
+)
+SELECT id, name, Year, APPEARANCES, year_maximum,
+       year_maximum - APPEARANCES AS appearances_to_year_maximum
+FROM year_stats
+ORDER BY Year, APPEARANCES DESC;
+
+
+-- 15. Узнать, сколько появлений не хватает персонажу до максимума его годовой группы.
+-- Из группового MAX вычитаем собственные APPEARANCES: это не поиск лидеров.
+-- Ноль означает совпадение с максимумом; одинаковый максимум возможен у нескольких.
+SELECT id, name, Year, APPEARANCES,
+MAX(APPEARANCES) OVER (PARTITION BY Year) - APPEARANCES
+AS appearances_to_year_maximum
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384
+ORDER BY Year, id;
+
+-- Результат: 24 строки; у Dominikos Petrakis (id 383) отставание 2.
+-- 16. В этой же подборке сравнить даты дебюта персонажей своей стороны.
+-- Меняем только смысл группы: PARTITION BY align_id, но считаем годы, не появления.
+-- Это средний и самый поздний год среди выбранных персонажей стороны, не всей Marvel.
+-- Результат: 24 строки; средние годы сторон 1, 2, 3 — 1976.13, 1979.18, 1977.2.
+
+SELECT id, name, align_id, Year,
+ROUND(AVG(Year) OVER (PARTITION BY align_id), 2) AS side_average_year,
+MAX(Year) OVER (PARTITION BY align_id) AS side_latest_year
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384
+ORDER BY align_id, Year, id;
+
+
+-- 17. Сравнить возле имени размер всей подборки с числом её персонажей такого же года.
+-- OVER () считает все выбранные строки; PARTITION BY Year — только свой год.
+-- Результат: 24 строки; selection_size всегда 24, characters_in_year от 1 до 3.
+SELECT id, name, Year,
+COUNT(*) OVER () AS selection_size,
+COUNT(*) OVER (PARTITION BY Year) AS characters_in_year
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384
+ORDER BY Year, id;
+
+-- 18. Присвоить записям хроники последовательные номера по году дебюта, затем по id.
+-- ROW_NUMBER даёт каждой строке отдельный номер; это не номер id в таблице.
+-- Внутри одного года меньший id получает меньший номер.
+-- Результат: 24 строки; Dorma (id 367) имеет номер 1, David Alleyne (id 370) — 24.
+SELECT id, name, Year, 
+ROW_NUMBER() OVER (ORDER BY Year, id) AS chronology_no
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384
+ORDER BY Year, id;
+-- 19. Сохранить номера хроники, но показать тех же персонажей в порядке id.
+-- ORDER BY внутри OVER присваивает номер; последний ORDER BY сортирует выдачу.
+-- Изменение порядка показа не пересчитывает chronology_no по id.
+-- Результат: 24 строки; первая по показу запись id 361 имеет chronology_no = 5.
+SELECT id, name, Year, 
+ROW_NUMBER() OVER (ORDER BY Year, id) AS chronology_no
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384
+ORDER BY id;
+-- 20. Пронумеровать персонажей отдельно внутри каждого года по id.
+-- При переходе к новому Year нумерация начинается заново с 1.
+-- Результат: 24 строки; id 379, 383, 384 получают номера 1, 2, 3 в 1981 году.
+
+SELECT id, name, Year, 
+ROW_NUMBER() OVER(
+    PARTITION BY Year
+    ORDER BY id
+) AS position_in_year
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384
+ORDER BY Year, position_in_year;
+
+
+-- 21. Внутри каждого года поставить сначала персонажей с большим числом появлений.
+-- Нумеруем по APPEARANCES DESC, id; при равенстве появлений порядок определяет id.
+-- Это порядок внутри года выбранной подборки, не рейтинг сторон или всей базы.
+-- Результат: 24 строки; в 1981 году id 379 — номер 1, id 383 — 2, id 384 — 3.
+
+SELECT id, name, Year, APPEARANCES,
+ROW_NUMBER() OVER (
+    PARTITION BY Year
+    ORDER BY APPEARANCES DESC, id
+) AS position_in_year
+FROM MarvelCharacters
+WHERE id BETWEEN 361 AND 384
+ORDER BY Year, position_in_year;
+
+
+
+-- НЕ РАБОТАЕТ ПОТОМУ ЧТО НА МОМЕНТ WHERE виртуального столбца еще не существует его посчитают позже. Поэтому это не будет так работать
+-- SELECT id, name, Year, APPEARANCES,
+-- ROW_NUMBER() OVER (
+--     PARTITION BY Year
+--     ORDER BY APPEARANCES DESC, id
+-- ) AS position_in_year
+-- FROM MarvelCharacters
+-- WHERE position_in_year < 6
+-- ORDER BY Year, position_in_year;
+
+WITH numbered_years AS (
+    SELECT id, name, Year, APPEARANCES,
+           ROW_NUMBER() OVER (
+               PARTITION BY Year
+               ORDER BY APPEARANCES DESC, id
+           ) AS position_in_year
+    FROM MarvelCharacters
+)
+SELECT id, name, Year, APPEARANCES, position_in_year
+FROM numbered_years
+WHERE position_in_year < 6
+ORDER BY Year, position_in_year;

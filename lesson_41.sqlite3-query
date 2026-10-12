@@ -1,0 +1,172 @@
+-- database: ./blog.db
+
+SELECT * FROM "table-name";
+
+
+-- Вывести список пользовательских таблиц в базе данных
+SELECT name
+FROM sqlite_schema
+WHERE type = 'table';
+
+SELECT type, name, tbl_name
+FROM sqlite_schema
+ORDER BY type, name;
+
+
+-- CREATE TABLE - создать таблицу
+-- IF NOT EXISTS - если таблица не существует
+CREATE TABLE IF NOT EXISTS posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    content TEXT
+);
+
+-- INSERT INTO - вставить данные в таблицу
+INSERT INTO posts (title, content)
+VALUES ('Какой ты Git сегодня', 'Спрашивает Линус смотря в зеркало по утрам...');
+
+
+INSERT INTO posts (title)
+VALUES (Null);
+
+DROP TABLE IF EXISTS posts;
+
+-- NOT NULL - не может быть пустым
+-- DEFAULT - значение по умолчанию
+-- CURRENT_TIMESTAMP - текущая дата и время
+CREATE TABLE IF NOT EXISTS posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    likes INTEGER DEFAULT 0,
+    view_count INTEGER DEFAULT 0
+);
+
+INSERT INTO posts (title, content)
+VALUES 
+('Мы очень боимся ИИ', 'Сказал Сэм Альтман и выпустил новую версию модели способную взламывать Huggning Face по-приколу...'), 
+('Мы никогда не будем использовать ИИ для оружия', 'Сказал Дарио Амадей и начал сотрудничать с Пентагоном для проведения кибер-операций...');
+
+-- Добавим post slug - уникальный идентификатор поста в виде строки
+ALTER TABLE posts ADD COLUMN slug TEXT DEFAULT NULL;
+
+-- Обновим slug для всех постов www.blog.ru/we-are-afraid-of-ai
+UPDATE posts
+SET slug = 'whata-git-are-you-today'
+WHERE id = 1;
+
+UPDATE posts
+SET slug = 'we-are-afraid-of-ai'
+WHERE id = 2;
+
+UPDATE posts
+SET slug = 'we-will-not-use-ai-for-weapons'
+WHERE id = 3;
+
+
+CREATE UNIQUE INDEX idx_posts_slug
+ON posts(slug);
+
+-- Миграция данных в new_posts
+CREATE TABLE IF NOT EXISTS new_posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    likes INTEGER DEFAULT 0,
+    view_count INTEGER DEFAULT 0
+);
+
+-- Перенос данных
+INSERT INTO new_posts (title, content, slug, create_at, likes, view_count)
+SELECT title, content, slug, create_at, likes, view_count
+FROM posts;
+
+-- Удаляем старую таблицу
+DROP TABLE posts;
+
+-- Переименовываем новую таблицу в posts
+ALTER TABLE new_posts RENAME TO posts;
+
+-- Удалить записи
+-- DELETE FROM posts
+-- WHERE id IN (1, 2);
+
+-- Создаем табличку с категориями
+CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL
+);
+
+-- Создаем записи категорий
+INSERT INTO categories (name, slug)
+VALUES 
+('Новости ИИ', 'ai-news'),
+('Новости Python', 'python-news'),
+('Разработка', 'development');
+
+-- Добавить category_id в таблицу posts
+ALTER TABLE posts ADD COLUMN category_id INTEGER
+REFERENCES categories(id);
+
+-- Обновим category_id Для первого поста
+UPDATE posts
+SET category_id = 3
+WHERE id = 1;
+
+
+UPDATE posts
+SET category_id = (
+    SELECT id 
+    FROM categories 
+    WHERE slug = 'ai-news')
+WHERE id IN (2, 3);
+
+
+SELECT p.id, p.title, c.name AS category_name, c.slug AS category_slug, p.slug, p.create_at
+FROM posts AS p
+JOIN  categories AS c ON p.category_id = c.id;
+
+-- Получить все посты с категорией со слагом ai-news
+SELECT p.id, p.title, c.name AS category_name, c.slug AS category_slug, p.slug, p.create_at
+FROM posts AS p
+JOIN  categories AS c ON p.category_id = c.id
+WHERE category_slug = 'ai-news';
+
+
+-- Создать пост где категория python-news
+INSERT INTO posts (title, content, slug, category_id)
+VALUES
+('3.15 уже в пути!', 'Скоро релиз Python 3.15!', 'python-3-15-soon', (
+    SELECT id FROM categories WHERE name = "Новости Python"
+));
+
+
+----- Как это было бы если бы с нуля проектировалось?
+
+-- Сначала категории. ПОтому что на них будут ссылатся посты
+CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    category_id INTEGER REFERENCES categories(id) ON DELETE RESTRICT,
+    create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    likes INTEGER DEFAULT 0,
+    view_count INTEGER DEFAULT 0)
+
+--     Действие	Что происходит
+-- NO ACTION	запрещает нарушение связи, это поведение по умолчанию
+-- RESTRICT	сразу запрещает удалить/изменить родителя, если есть связанные строки
+-- CASCADE	действие переносится на дочерние строки
+-- SET NULL	внешний ключ становится NULL
+-- SET DEFAULT	внешний ключ получает DEFAULT
