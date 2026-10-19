@@ -1,0 +1,181 @@
+-- database: c:\PY\ПРИМЕРЫ КОДА\PYTHON621\blog.db
+
+-- 0. Очищаю базу
+PRAGMA foreign_keys = OFF;
+DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS posts_hashtags;
+DROP TABLE IF EXISTS hashtags;
+PRAGMA foreign_keys = ON;
+PRAGMA foreign_keys;
+
+-- 1. Создаем категории
+CREATE TABLE categories (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+    slug TEXT NOT NULL UNIQUE
+);
+
+-- 2. Посты
+CREATE TABLE posts (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL UNIQUE,
+    content TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    category_id INTEGER REFERENCES categories(id) ON DELETE RESTRICT,
+    create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    likes INTEGER DEFAULT 0,
+    view_count INTEGER DEFAULT 0
+);
+
+-- 3. Таблица хештегов
+CREATE TABLE hashtags (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL UNIQUE,
+    slug TEXT NOT NULL UNIQUE
+);
+
+-- 4. Таблица связей посты - теги. Это m2m связь - можно указать много тегов и много постов
+CREATE TABLE posts_hashtags (
+    post_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    hashtag_id INTEGER NOT NULL REFERENCES hashtags(id) ON DELETE CASCADE,
+    PRIMARY KEY (post_id, hashtag_id)
+);
+
+
+-- 6. Все же надо отключить проверку целостности - без этого у нас посты не добавятся (потому что будут ссылаться на несуществующие категории и нам надо выключить эту проверку)
+PRAGMA foreign_keys = OFF;
+
+-- 5. Попытка вставить посты
+INSERT INTO posts (title, content, slug, category_id)
+VALUES ('Первый запуск Python', 'Запускаем небольшую программу.', 'first-python', 1),
+       ('Git для Python-проекта', 'Сохраняем изменения программы.', 'python-git', 1),
+       ('Знакомство с SQLite', 'Храним данные в связанных таблицах.', 'sqlite-start', 2),
+       ('SQL из Python', 'Соединяем программу и базу данных.', 'python-sql', 2),
+       ('Пост без хэштегов', 'Эта запись пока не размечена.', 'no-hashtags', 3);
+
+
+-- Включили проверку целостности обратно
+PRAGMA foreign_keys = ON;
+
+-- 6. Добавляю категории (на которые УЖЕ ссылаются существующие посты)
+INSERT INTO categories (name, slug)
+VALUES ('Python', 'python'), ('Базы данных', 'databases'), ('Инструменты', 'tools');
+
+-- 7. Добавление тегов
+INSERT INTO hashtags (title, slug)
+VALUES ('Python', 'python'), ('SQLite', 'sqlite'), ('Git', 'git'), ('Обучение', 'learning'), ('Новости', 'news');
+
+-- 8. Добавление хештегов постам. Указываем id поста, и id тега
+
+INSERT INTO posts_hashtags (post_id, hashtag_id)
+VALUES (1, 1), (1, 2),
+       (2, 1), (2, 3),
+       (3, 2), (3, 4),
+       (4, 1), (4, 4);
+
+-- БЛОК ЧТЕНИЕ
+-- 9 Читаем посты и названия категорий
+SELECT p.id, p.slug, p.title, p.create_at, p.likes, p.view_count, c.name
+FROM posts AS p
+JOIN categories AS c ON c.id = p.category_id;
+
+-- 10 JOIN и получение данных многие ко многим
+SELECT p.id AS post_id, p.title AS post_title, h.id AS tag_id, h.title AS tag_title
+FROM posts AS p
+JOIN posts_hashtags AS ph ON ph.post_id = p.id
+JOIN hashtags AS h ON h.id = ph.hashtag_id
+ORDER By p.id, h.id;
+
+-- 11 И посты и категории и хештеги
+SELECT p.id AS post_id, p.title AS post_title, h.id AS tag_id, h.title AS tag_title, c.name AS category_name
+FROM posts AS p
+JOIN posts_hashtags AS ph ON ph.post_id = p.id
+JOIN hashtags AS h ON h.id = ph.hashtag_id
+JOIN categories AS c ON p.category_id = c.id
+ORDER By p.id, h.id;
+
+
+-- 12 И посты и категории и хештеги и группировка по post_id
+SELECT p.id AS post_id, p.title AS post_title, h.id AS tag_id, h.title AS tag_title, c.name AS category_name
+FROM posts AS p
+JOIN posts_hashtags AS ph ON ph.post_id = p.id
+JOIN hashtags AS h ON h.id = ph.hashtag_id
+JOIN categories AS c ON p.category_id = c.id
+GROUP BY post_id
+ORDER By p.id, h.id;
+
+-- 13 И посты и категории и хештеги и группировка по post_id решаю проблему того что показывается ТОЛЬКО один тег на "ГРУППУ" поста GROUP CONCAT - выведет все записи Тегов через запятую для этого поста
+SELECT p.id AS post_id, p.title AS post_title, h.id AS tag_id, group_concat(h.title, ", ") AS tag_title, c.name AS category_name
+FROM posts AS p
+JOIN posts_hashtags AS ph ON ph.post_id = p.id
+JOIN hashtags AS h ON h.id = ph.hashtag_id
+JOIN categories AS c ON p.category_id = c.id
+GROUP BY post_id
+ORDER By p.id, h.id;
+
+-- 14 Получить все теги одного поста
+SELECT h.id, h.title AS tag_title, p.id
+FROM posts AS p
+JOIN posts_hashtags AS ph ON ph.post_id = p.id
+JOIN hashtags AS h ON ph.hashtag_id = h.id
+WHERE p.id = 1;
+
+-- 15 Получить все посты одного тега
+SELECT p.id AS post_id, p.title AS post_title, h.title AS tag_title
+FROM hashtags AS h
+JOIN posts_hashtags AS ph ON h.id = ph.hashtag_id
+JOIN posts AS p ON ph.post_id = p.id
+WHERE h.id = 1;
+
+-- БЛОК добавления изменения данных
+-- 16 Создать новый пост и новый тег (Пока без привязки тега к посту)
+INSERT INTO posts (title, content, slug, category_id)
+VALUES ('Ветки Git', 'Пробуем независимые изменения.', 'git-branches', 3);
+
+-- Проверяем автоматический id новой записи, а не угадываем его в существующей базе.
+SELECT id, title, category_id, create_at FROM posts WHERE slug = 'git-branches';
+
+
+-- Добавляем новый хэштег пока без единой привязки.
+INSERT INTO hashtags (title, slug) VALUES ('Практика', 'practice');
+
+-- Проверяем ключ нового хэштега.
+SELECT id, title FROM hashtags WHERE slug = 'practice';
+
+--17. Привязать к новому посту теги
+INSERT INTO posts_hashtags (post_id, hashtag_id)
+VALUES ((SELECT id FROM posts WHERE slug = 'git-branches'),
+        (SELECT id FROM hashtags WHERE slug = 'git')),
+       ((SELECT id FROM posts WHERE slug = 'git-branches'),
+        (SELECT id FROM hashtags WHERE slug = 'practice'));
+
+
+-- 18. Проверяем два хэштега нового поста.
+SELECT p.id, p.title, h.title AS hashtag
+FROM posts AS p
+JOIN posts_hashtags AS ph ON ph.post_id = p.id
+JOIN hashtags AS h ON h.id = ph.hashtag_id
+WHERE p.slug = 'git-branches'
+ORDER BY h.id;
+
+-- 19. Обновляем текст одного поста
+UPDATE posts SET content = 'Проверяем внешние ключи и читаем связанные данные.' WHERE id = 3;
+
+-- 20. Перенести пост из одной категории в другую
+UPDATE posts
+SET category_id = (SELECT id FROM categories WHERE slug = 'databases')
+WHERE slug = 'git-branches';
+
+-- 21. Обновили название тега но другие данные это не затронуло
+UPDATE hashtags SET title = 'Python: практика' WHERE id = 1;
+
+-- 22. Снять тег с поста
+SELECT *
+FROM posts_hashtags;
+-- Посмотрели что в базе и готовы удалить строку где post 4 tag 1
+DELETE FROM posts_hashtags WHERE post_id = 4 AND hashtag_id = 1
+
+-- BEGIN - начало транзакции
+-- ROLLBACK - откат
+-- COMMIT - сохранение
